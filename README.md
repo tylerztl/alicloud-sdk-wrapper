@@ -6,8 +6,8 @@ Provide server and runtime resources for zhigui upper applications on the basis 
 
 The providers to be used:
 
-1. [alicloud-ecs](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance)
-2. [alicloud-vpc](https://github.com/terraform-alicloud-modules/terraform-alicloud-vpc)
+* [alicloud-ecs](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance)
+* [alicloud-vpc](https://github.com/terraform-alicloud-modules/terraform-alicloud-vpc)
 
 Related source codes:
 
