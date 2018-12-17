@@ -13,3 +13,4 @@ Related source codes:
 
 - [terraform-provider-alicloud](https://github.com/terraform-providers/terraform-provider-alicloud)
 - [alibaba-cloud-sdk-go](https://github.com/aliyun/alibaba-cloud-sdk-go)
+- [openapi-core-nodejs-sdk](https://github.com/aliyun/openapi-core-nodejs-sdk)
