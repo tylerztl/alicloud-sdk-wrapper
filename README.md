@@ -1,3 +1,3 @@
 # zig-cloud
 
-Provide resources for zhigui upper applications on the basis of various cloud and platform.
+Provide server and runtime resources for zhigui upper applications on the basis of various cloud and platform.
