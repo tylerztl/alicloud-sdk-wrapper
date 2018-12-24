@@ -6,7 +6,7 @@ RUN go get github.com/tools/godep
 # Recompile the standard library without CGO
 RUN CGO_ENABLED=0 go install -a std
 
-ENV APP_DIR $GOPATH/home/ubuntu/workspace/zig-cloud
+ENV APP_DIR $GOPATH/src/zig-cloud
 RUN mkdir -p $APP_DIR
 
 # Set the entrypoint
