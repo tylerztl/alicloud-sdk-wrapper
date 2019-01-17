@@ -19,6 +19,8 @@ func init() {
 				&controllers.UserController{},
 			),
 		),
+		beego.NSNamespace("/cloud",
+			beego.NSRouter("/create",nil,"post:create")),
 	)
 	beego.AddNamespace(ns)
 }
