@@ -16,6 +16,7 @@ func TestAliyunClient(t *testing.T) {
 	client, err := ecs.NewClientWithAccessKey(regionId, accessKeyId, accessKeySecret)
 
 	if err != nil {
+		t.Log(">>> encounter errors")
 		t.Error(err)
 	}
 
@@ -30,6 +31,7 @@ func TestAliyunClient(t *testing.T) {
 	response, err := client.DescribeUserData(&request)
 
 	if err != nil {
+		t.Log(">>> encounter request errors")
 		t.Error(err)
 	}
 	t.Log(response.InstanceId)
