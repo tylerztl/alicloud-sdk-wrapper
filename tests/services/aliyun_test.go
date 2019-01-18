@@ -35,7 +35,7 @@ func TestAliyunClient(t *testing.T) {
 	client := GetClient()
 
 	request := ecs.CreateDescribeInstanceAttributeRequest()
-	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
+	request.InstanceId = "i-hp38tm132y3ctkm9q65a"
 	response, err := client.DescribeInstanceAttribute(request)
 
 	if err != nil {
@@ -65,7 +65,7 @@ func TestCreateInstance(t *testing.T) {
 func TestDeleteInstance(t *testing.T) {
 	client := GetClient()
 	request := ecs.CreateDeleteInstanceRequest()
-	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
+	request.InstanceId = "i-hp38tm132y3ctkm9q65a"
 	response, err := client.DeleteInstance(request)
 	if err != nil {
 		fmt.Println(">>> encounter request errors")
