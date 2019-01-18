@@ -7,6 +7,12 @@ import (
 )
 
 type CloudProvider struct {
+	regionId string
+	accessKeyId string
+	accessKeySecret string
+}
+
+func (provider *CloudProvider) ConfigureClient() {
 
 }
 
@@ -29,10 +35,7 @@ func (provider *CloudProvider) RunInstances(request services.Request) services.R
 }
 
 func (provider *CloudProvider) GetClient()  *ecs.Client {
-	regionId := ""
-	accessKeyId := "76PKIccqlFZERf7X"
-	accessKeySecret := "6QHPmxyEf80WqUNinteE1WWWqoz8IW"
-	client, err := ecs.NewClientWithAccessKey(regionId, accessKeyId,accessKeySecret)
+	client, err := ecs.NewClientWithAccessKey(provider.regionId, provider.accessKeyId, provider.accessKeySecret)
 	if err == nil {
 		return client
 	}else {
