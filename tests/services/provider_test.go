@@ -14,7 +14,8 @@ func TestHelloWorld(t *testing.T) {
 
 func TestAliyunClient(t *testing.T) {
 
-	var regionId string = "cn-hangzhou"
+	//var regionId string = "cn-hangzhou"
+	var regionId string = "us-west-1"
 	var accessKeyId string = "76PKIccqlFZERf7X"
 	var accessKeySecret string = "6QHPmxyEf80WqUNinteE1WWWqoz8IW"
 
@@ -32,7 +33,6 @@ func TestAliyunClient(t *testing.T) {
 	*/
 	request := ecs.DescribeUserDataRequest{}
 	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
-	request.RegionId = "us-west-1"
 	response, err := client.DescribeUserData(&request)
 
 	if err != nil {
