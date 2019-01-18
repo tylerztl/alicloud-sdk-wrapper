@@ -7,12 +7,16 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 )
 
-var regionId string = "cn-hangzhou"
-var accessKeyId string = "76PKIccqlFZERf7X"
-var accessKeySecret string = "6QHPmxyEf80WqUNinteE1WWWqoz8IW"
-
+func TestHelloWorld(t *testing.T) {
+	t.Log("Hello World")
+}
 
 func TestAliyunClient(t *testing.T) {
+
+	var regionId string = "cn-hangzhou"
+	var accessKeyId string = "76PKIccqlFZERf7X"
+	var accessKeySecret string = "6QHPmxyEf80WqUNinteE1WWWqoz8IW"
+
 	client, err := ecs.NewClientWithAccessKey(regionId, accessKeyId, accessKeySecret)
 
 	if err != nil {
