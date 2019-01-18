@@ -43,7 +43,7 @@ func TestCreateInstance(t *testing.T) {
 	request := ecs.CreateCreateInstanceRequest()
 	request.ImageId = "ubuntu_16_0402_64_20G_alibase_20180409.vhd"
 	request.InstanceName = "MyInstance"
-	//request.SecurityGroupId = "<your-security-group-id>"
+	//request.SecurityGroupId = "sg-rj9f8xghzfk3jui835w8"
 	request.InstanceType = "ecs.sn2ne.large"
 	//request.InstanceType = "ecs.t1.small"
 	request.ClientToken = utils.GetUUIDV4()
