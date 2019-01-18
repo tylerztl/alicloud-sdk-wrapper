@@ -5,6 +5,7 @@ import (
 	"zig-cloud/services"
 	"zig-cloud/services/cloudprovider/aliyun"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
+	"fmt"
 )
 
 func TestHelloWorld(t *testing.T) {
@@ -20,7 +21,7 @@ func TestAliyunClient(t *testing.T) {
 	client, err := ecs.NewClientWithAccessKey(regionId, accessKeyId, accessKeySecret)
 
 	if err != nil {
-		t.Log(">>> encounter errors")
+		fmt.Println(">>> encounter errors")
 		t.Error(err)
 	}
 
@@ -35,7 +36,7 @@ func TestAliyunClient(t *testing.T) {
 	response, err := client.DescribeUserData(&request)
 
 	if err != nil {
-		t.Log(">>> encounter request errors")
+		fmt.Println(">>> encounter request errors")
 		t.Error(err)
 	}
 	t.Log(response.InstanceId)
