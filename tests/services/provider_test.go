@@ -18,15 +18,21 @@ func TestAliyunClient(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+
+	/*
 	request := new(ecs.DescribeUserDataRequest)
 	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
 	request.RegionId = "us-west-1"
-	response, err := client.DescribeUserData(request)
+	*/
+	request := ecs.DescribeUserDataRequest{}
+	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
+	request.RegionId = "us-west-1"
+	response, err := client.DescribeUserData(&request)
 
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(response)
+	t.Log(response.InstanceId)
 }
 
 func TestAliyunCreateInstance(t *testing.T) {
