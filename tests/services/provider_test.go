@@ -8,12 +8,8 @@ import (
 	"fmt"
 )
 
-func TestHelloWorld(t *testing.T) {
-	t.Log("Hello World")
-}
 
-func TestAliyunClient(t *testing.T) {
-
+func GetClient() *ecs.Client {
 	//var regionId string = "cn-hangzhou"
 	var regionId string = "us-west-1"
 	var accessKeyId string = "76PKIccqlFZERf7X"
@@ -21,25 +17,31 @@ func TestAliyunClient(t *testing.T) {
 
 	client, err := ecs.NewClientWithAccessKey(regionId, accessKeyId, accessKeySecret)
 
-	if err != nil {
+	if err == nil {
+		return client
+	} else {
 		fmt.Println(">>> encounter errors")
-		t.Error(err)
+		return nil
 	}
+}
 
-	/*
-	request := new(ecs.DescribeUserDataRequest)
+func TestHelloWorld(t *testing.T) {
+	t.Log("Hello World")
+}
+
+func TestAliyunClient(t *testing.T) {
+
+	client := GetClient()
+
+	request := ecs.CreateDescribeInstanceAttributeRequest()
 	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
-	request.RegionId = "us-west-1"
-	*/
-	request := ecs.DescribeUserDataRequest{}
-	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
-	response, err := client.DescribeUserData(&request)
+	response, err := client.DescribeInstanceAttribute(request)
 
 	if err != nil {
 		fmt.Println(">>> encounter request errors")
 		t.Error(err)
 	}
-	t.Log(response.InstanceId)
+	t.Log(response.GetHttpContentString())
 }
 
 func TestAliyunCreateInstance(t *testing.T) {
