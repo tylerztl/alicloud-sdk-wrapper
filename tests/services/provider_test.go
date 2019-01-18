@@ -20,6 +20,7 @@ func TestAliyunClient(t *testing.T) {
 	}
 	request := new(ecs.DescribeUserDataRequest)
 	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
+	request.RegionId = "us-west-1"
 	response, err := client.DescribeUserData(request)
 
 	if err != nil {

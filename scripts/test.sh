@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-go test services -run TestAliyunClient
+go test zig-cloud/tests/services -run TestAliyunClient
