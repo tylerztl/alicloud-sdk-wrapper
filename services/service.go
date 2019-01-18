@@ -3,6 +3,7 @@ package services
 // define all kinds of services
 
 type Provider interface {
-	CreateInstance()
-	RunInstances()
+	CreateInstance(request Request) Response
+	RunInstances(request Request) Response
 }
+
