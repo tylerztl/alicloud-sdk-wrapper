@@ -86,3 +86,17 @@ func TestCreateSecurityGroup(t *testing.T) {
 	}
 	t.Log(response.GetHttpContentString())
 }
+
+func TestDescribeRegions(t *testing.T) {
+	client := GetClient()
+
+	request := ecs.CreateDescribeRegionsRequest()
+
+	response, err := client.DescribeRegions(request)
+
+	if err != nil {
+		fmt.Println(">>> encounter request errors")
+		t.Error(err)
+	}
+	t.Log(response.GetHttpContentString())
+}
