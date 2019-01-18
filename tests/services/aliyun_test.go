@@ -9,7 +9,7 @@ import (
 
 func GetClient() *ecs.Client {
 	///*
-	var regionId string = "cn-hangzhou"
+	var regionId string = "cn-huhehaote"
 	var accessKeyId string = "LTAIP5a896b3WUho"
 	var accessKeySecret string = "R94ZD14r8kfZlEZuk6mclpppxKSoCc"
 	//*/
