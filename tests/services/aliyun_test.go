@@ -8,10 +8,17 @@ import (
 )
 
 func GetClient() *ecs.Client {
-	//var regionId string = "cn-hangzhou"
+	///*
+	var regionId string = "cn-hangzhou"
+	var accessKeyId string = "LTAIP5a896b3WUho"
+	var accessKeySecret string = "R94ZD14r8kfZlEZuk6mclpppxKSoCc"
+	//*/
+
+	/*
 	var regionId string = "us-west-1"
 	var accessKeyId string = "76PKIccqlFZERf7X"
 	var accessKeySecret string = "6QHPmxyEf80WqUNinteE1WWWqoz8IW"
+	*/
 
 	client, err := ecs.NewClientWithAccessKey(regionId, accessKeyId, accessKeySecret)
 
@@ -60,6 +67,19 @@ func TestDeleteInstance(t *testing.T) {
 	request := ecs.CreateDeleteInstanceRequest()
 	request.InstanceId = "i-rj99oa9orptlgqdhyftu"
 	response, err := client.DeleteInstance(request)
+	if err != nil {
+		fmt.Println(">>> encounter request errors")
+		t.Error(err)
+	}
+	t.Log(response.GetHttpContentString())
+}
+
+func TestCreateSecurityGroup(t *testing.T) {
+	client := GetClient()
+	request := ecs.CreateCreateSecurityGroupRequest()
+
+	response, err := client.CreateSecurityGroup(request)
+
 	if err != nil {
 		fmt.Println(">>> encounter request errors")
 		t.Error(err)
