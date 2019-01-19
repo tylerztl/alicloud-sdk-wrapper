@@ -8,8 +8,8 @@ type CloudController struct {
 
 // @Title CreateInstance
 // @Description create instance
-// @Param	body
-// @Success 200 {int}
+// @Param	body	body 	commons.CreateInstanceRequest	true 	"body content"
+// @Success 200 {}
 // @Failure 403
 // @router /create [post]
 func (cloud *CloudController) createInstance(){
@@ -19,8 +19,8 @@ func (cloud *CloudController) createInstance(){
 
 // @Title RunInstances
 // @Description run instances
-// @Param body
-// @Success 200
+// @Param	body	body 	commons.RunInstancesRequest	true 	"body content"
+// @Success 200 {}
 // @Failure 403
 // @router /run [post]
 func (cloud *CloudController) runInstances(){
