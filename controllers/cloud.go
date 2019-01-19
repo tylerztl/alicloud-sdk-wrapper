@@ -12,7 +12,7 @@ type CloudController struct {
 // @Success 200 {}
 // @Failure 403
 // @router /create [post]
-func (cloud *CloudController) createInstance(){
+func (cloud *CloudController) CreateInstance(){
 	cloud.Data["json"] = map[string]string{}
 	cloud.ServeJSON()
 }
@@ -23,7 +23,7 @@ func (cloud *CloudController) createInstance(){
 // @Success 200 {}
 // @Failure 403
 // @router /run [post]
-func (cloud *CloudController) runInstances(){
+func (cloud *CloudController) RunInstances(){
 	dataMap := make(map[string]string)
 	dataMap["instances"] = "a,b,c"
 	cloud.Data["json"] = dataMap

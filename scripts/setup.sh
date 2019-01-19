@@ -9,3 +9,5 @@ go get github.com/smartystreets/goconvey
 # Download bee command tool
 
 go get -u github.com/beego/bee
+
+bee run -downdoc=true -gendoc true -runmode=BEEGO_RUNMODE

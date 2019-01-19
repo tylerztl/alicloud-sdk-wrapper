@@ -30,7 +30,7 @@ func GetClient() *ecs.Client {
 	}
 }
 
-func TestAliyunClient(t *testing.T) {
+func TestAliCloudClient(t *testing.T) {
 
 	client := GetClient()
 
