@@ -13,6 +13,9 @@ func TestAliCloudRunInstances(t *testing.T) {
 	runInstanceRequest := ecs.CreateRunInstancesRequest()
 	runInstanceRequest.InstanceType = commons.AliCloudInstanceType
 
+	runInstanceRequest.IoOptimized = "optimized"
+	runInstanceRequest.IoOptimized = "none"
+
 	response, err := client.RunInstances(runInstanceRequest)
 
 	if err == nil {
