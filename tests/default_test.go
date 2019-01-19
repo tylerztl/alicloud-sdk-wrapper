@@ -4,12 +4,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"runtime"
-	"path/filepath"
 	_ "zig-cloud/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"
+	"runtime"
+	"path/filepath"
 )
 
 func init() {

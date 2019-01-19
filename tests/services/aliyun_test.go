@@ -74,19 +74,6 @@ func TestDeleteInstance(t *testing.T) {
 	t.Log(response.GetHttpContentString())
 }
 
-func TestCreateSecurityGroup(t *testing.T) {
-	client := GetClient()
-	request := ecs.CreateCreateSecurityGroupRequest()
-
-	response, err := client.CreateSecurityGroup(request)
-
-	if err != nil {
-		fmt.Println(">>> encounter request errors")
-		t.Error(err)
-	}
-	t.Log(response.GetHttpContentString())
-}
-
 func TestDescribeRegions(t *testing.T) {
 	client := GetClient()
 
