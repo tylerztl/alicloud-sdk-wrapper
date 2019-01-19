@@ -2,7 +2,7 @@ package controllers
 
 import "github.com/astaxie/beego"
 
-type InstanceController struct {
+type CloudController struct {
 	beego.Controller
 }
 
@@ -12,8 +12,9 @@ type InstanceController struct {
 // @Success 200 {int}
 // @Failure 403
 // @router /create [post]
-func (instance *InstanceController) createInstance(){
-
+func (cloud *CloudController) createInstance(){
+	cloud.Data["json"] = map[string]string{}
+	cloud.ServeJSON()
 }
 
 // @Title RunInstances
@@ -22,6 +23,9 @@ func (instance *InstanceController) createInstance(){
 // @Success 200
 // @Failure 403
 // @router /run [post]
-func (instance *InstanceController) runInstances(){
-
+func (cloud *CloudController) runInstances(){
+	dataMap := make(map[string]string)
+	dataMap["instances"] = "a,b,c"
+	cloud.Data["json"] = dataMap
+	cloud.ServeJSON()
 }

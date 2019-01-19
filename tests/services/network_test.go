@@ -13,7 +13,7 @@ func TestCreateSecurityGroup(t *testing.T) {
 	client := GetClient()
 	request := ecs.CreateCreateSecurityGroupRequest()
 	request.SecurityGroupName = helpers.GenerateSecurityGroupName()
-	request.Description = commons.AliyunSecurityGroupDescription
+	request.Description = commons.AliCloudSecurityGroupDescription
 	response, err := client.CreateSecurityGroup(request)
 
 	if err != nil {

@@ -1,4 +1,4 @@
-package aliyun
+package alicloud
 
 import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"

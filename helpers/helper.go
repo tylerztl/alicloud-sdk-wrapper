@@ -11,11 +11,11 @@ import (
 // define the helper functions
 
 func GenerateSecurityGroupName() string  {
-	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliyunSecurityGroupName, GenerateRandomString())
+	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliCloudSecurityGroupName, GenerateRandomString())
 }
 
 func GenerateSecurityGroupRuleName() string {
-	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliyunSecurityGroupRuleName, GenerateRandomString())
+	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliCloudSecurityGroupRuleName, GenerateRandomString())
 }
 
 func GenerateRandomString() string {
