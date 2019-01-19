@@ -10,4 +10,4 @@ go get github.com/smartystreets/goconvey
 
 go get -u github.com/beego/bee
 
-bee run -downdoc=true -gendoc true -runmode=BEEGO_RUNMODE
+bee run -downdoc=true -gendoc true

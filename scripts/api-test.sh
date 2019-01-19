@@ -2,7 +2,7 @@
 
 # test run instances API
 
-curl -s -X POST \
-  http://localhost:8080/cloud/run \
-  -H "content-type: application/x-www-form-urlencoded" \
-  -d ''
+curl -X POST "http://localhost:8080/v1/cloud/run" \
+  -H  "accept: application/json" \
+  -H "content-type: application/json" \
+  -d "{}"
