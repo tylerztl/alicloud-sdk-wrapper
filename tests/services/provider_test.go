@@ -7,10 +7,8 @@ import (
 )
 
 
-func TestAliCloudCreateInstance(t *testing.T) {
+func TestProvider(t *testing.T) {
 	var provider services.Provider
 	provider = new(alicloud.CloudProvider)
-	request := services.Request{}
-	provider.RunInstances(request)
-	t.Log("hello world")
+	t.Log(provider)
 }

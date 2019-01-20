@@ -10,6 +10,10 @@ import (
 
 // define the helper functions
 
+func GenerateInstanceName() string {
+	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliCloudInstanceName, GenerateRandomString())
+}
+
 func GenerateSecurityGroupName() string  {
 	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliCloudSecurityGroupName, GenerateRandomString())
 }
