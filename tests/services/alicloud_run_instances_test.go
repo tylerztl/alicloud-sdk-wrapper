@@ -6,17 +6,41 @@ import (
 	"fmt"
 	"zig-cloud/commons"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+	"zig-cloud/helpers"
 )
 
 func TestAliCloudRunInstances(t *testing.T) {
 	client := GetClient()
+
+	request := ecs.CreateCreateSecurityGroupRequest()
+	request.SecurityGroupName = helpers.GenerateSecurityGroupName()
+	request.Description = commons.AliCloudSecurityGroupDescription
+	response, err := client.CreateSecurityGroup(request)
+
+	if err != nil {
+		fmt.Println(">>> encounter request errors")
+		t.Error(err)
+	}
+	fmt.Println("The security group ID is " + response.SecurityGroupId)
+	fmt.Println(response.GetHttpContentString())
+
+	authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest();
+	authorizeSecurityGroupRequest.SecurityGroupId = response.SecurityGroupId
+	authorizeSecurityGroupRequest.NicType = "intranet"
+	authorizeSecurityGroupRequest.IpProtocol = "tcp"
+	authorizeSecurityGroupRequest.Policy = "accept"
+	authorizeSecurityGroupRequest.PortRange = "22/22"
+	authorizeSecurityGroupRequest.Priority = "1"
+	authorizeSecurityGroupRequest.SourceCidrIp = "0.0.0.0/0"
+	authorizeSecurityGroupRequest.Description = "This rule is created by BaaS"
+	client.AuthorizeSecurityGroup(authorizeSecurityGroupRequest)
 
 	runInstanceRequest := ecs.CreateRunInstancesRequest()
 
 	runInstanceRequest.ImageId = commons.AliCloudImageId
 	runInstanceRequest.SystemDiskCategory = commons.AliCloudSystemDiskCategory
 	runInstanceRequest.SystemDiskSize = commons.AliCloudSystemDiskSize
-	//runInstanceRequest.SecurityGroupId = commons.AliCloudSecurityGroupId
+	runInstanceRequest.SecurityGroupId = response.SecurityGroupId
 	runInstanceRequest.InstanceName = commons.AliCloudInstanceName
 	runInstanceRequest.Description = commons.AliCloudInstanceDescription
 	runInstanceRequest.InstanceType = commons.AliCloudInstanceType
@@ -30,10 +54,10 @@ func TestAliCloudRunInstances(t *testing.T) {
 
 	runInstanceRequest.IoOptimized = "none"
 
-	response, err := client.RunInstances(runInstanceRequest)
+	instanceResponse, err := client.RunInstances(runInstanceRequest)
 
 	if err == nil {
-		fmt.Println(response.GetHttpContentString())
+		fmt.Println(instanceResponse.GetHttpContentString())
 	}else {
 		t.Error(err)
 	}

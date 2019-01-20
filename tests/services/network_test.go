@@ -19,17 +19,18 @@ func TestCreateSecurityGroup(t *testing.T) {
 		fmt.Println(">>> encounter request errors")
 		t.Error(err)
 	}
-	fmt.Printf("The security group ID is %s", response.SecurityGroupId)
-	t.Log(response.GetHttpContentString())
+	fmt.Println("The security group ID is " + response.SecurityGroupId)
+	fmt.Println(response.GetHttpContentString())
 
 	authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest();
 	authorizeSecurityGroupRequest.SecurityGroupId = response.SecurityGroupId
 	authorizeSecurityGroupRequest.NicType = "intranet"
 	authorizeSecurityGroupRequest.IpProtocol = "tcp"
 	authorizeSecurityGroupRequest.Policy = "accept"
-	authorizeSecurityGroupRequest.PortRange = "80/80"
+	authorizeSecurityGroupRequest.PortRange = "22/22"
 	authorizeSecurityGroupRequest.Priority = "1"
 	authorizeSecurityGroupRequest.SourceCidrIp = "0.0.0.0/0"
+	authorizeSecurityGroupRequest.Description = "This rule is created by BaaS"
 	client.AuthorizeSecurityGroup(authorizeSecurityGroupRequest)
 }
 
