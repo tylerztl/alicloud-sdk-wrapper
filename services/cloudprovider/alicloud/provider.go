@@ -5,6 +5,7 @@ import (
 	"zig-cloud/helpers"
 	"zig-cloud/commons"
 	"zig-cloud/services"
+	"github.com/astaxie/beego"
 )
 
 type CloudProvider struct {
@@ -29,7 +30,7 @@ func (provider *CloudProvider) CreateInstance(request *commons.CreateInstanceReq
 func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse, error) {
 	client := provider.GetClient()
 	runInstancesRequest := ecs.CreateRunInstancesRequest()
-
+	helpers.TransferValuesBetweenRequest(runInstancesRequest,request)
 	response, err := client.RunInstances(runInstancesRequest)
 	if err == nil {
 		return helpers.GetRunInstancesResponse(response), nil
@@ -44,6 +45,7 @@ func (provider *CloudProvider) GetClient()  *ecs.Client {
 	if err == nil {
 		return client
 	}else {
+		beego.Error(err)
 		return nil;
 	}
 }

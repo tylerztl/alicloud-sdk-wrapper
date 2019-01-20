@@ -12,3 +12,8 @@ func GetCreateInstanceResponse(response *ecs.CreateInstanceResponse) *commons.Cr
 func GetRunInstancesResponse(response *ecs.RunInstancesResponse) *commons.RunInstancesResponse {
 	return &commons.RunInstancesResponse{}
 }
+
+
+func TransferValuesBetweenRequest(runInstancesRequest *ecs.RunInstancesRequest, request *commons.RunInstancesRequest){
+
+}
