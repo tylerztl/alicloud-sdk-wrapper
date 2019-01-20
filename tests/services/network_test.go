@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"zig-cloud/helpers"
 	"zig-cloud/commons"
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 )
 
 func TestCreateSecurityGroup(t *testing.T) {
@@ -22,17 +21,16 @@ func TestCreateSecurityGroup(t *testing.T) {
 	}
 	fmt.Printf("The security group ID is %s", response.SecurityGroupId)
 	t.Log(response.GetHttpContentString())
+
+	authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest();
+	authorizeSecurityGroupRequest.SecurityGroupId = response.SecurityGroupId
+	authorizeSecurityGroupRequest.NicType = "intranet"
+	authorizeSecurityGroupRequest.IpProtocol = "tcp"
+	authorizeSecurityGroupRequest.Policy = "accept"
+	authorizeSecurityGroupRequest.PortRange = "80/80"
+	authorizeSecurityGroupRequest.Priority = "1"
+	authorizeSecurityGroupRequest.SourceCidrIp = "0.0.0.0/0"
+	client.AuthorizeSecurityGroup(authorizeSecurityGroupRequest)
 }
 
 
-func TestCreateSecurityGroupRule(t *testing.T) {
-	client := GetClient()
-	securityGroupRule := ecs.CreateModifySecurityGroupRuleRequest()
-	request :=  requests.NewCommonRequest()
-	request.Product = securityGroupRule.GetProduct()
-	response, err := client.ProcessCommonRequest(request)
-
-	if err == nil {
-		fmt.Println(response.GetHttpContentString())
-	}
-}
