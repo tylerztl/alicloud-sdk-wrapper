@@ -12,9 +12,31 @@ import (
 func TestAliCloudRunInstances(t *testing.T) {
 	client := GetClient()
 
+	vpcRequest := ecs.CreateCreateVpcRequest()
+	vpcRequest.VpcName = "BaaSVPC"
+	vpcRequest.CidrBlock = "172.16.0.0/12"
+
+	vpcResponse, err := client.CreateVpc(vpcRequest)
+
+	if err == nil {
+		fmt.Println(vpcResponse.GetHttpContentString())
+	}
+
+	switchRequest := ecs.CreateCreateVSwitchRequest()
+
+	switchRequest.VpcId = vpcResponse.VpcId
+	switchRequest.CidrBlock = "172.16.0.0/24"
+
+	switchResponse, err := client.CreateVSwitch(switchRequest)
+
+	if err == nil {
+		fmt.Println(switchResponse.GetHttpContentString())
+	}
+
 	request := ecs.CreateCreateSecurityGroupRequest()
 	request.SecurityGroupName = helpers.GenerateSecurityGroupName()
 	request.Description = commons.AliCloudSecurityGroupDescription
+	request.VpcId = vpcResponse.VpcId
 	response, err := client.CreateSecurityGroup(request)
 
 	if err != nil {
@@ -53,6 +75,8 @@ func TestAliCloudRunInstances(t *testing.T) {
 	runInstanceRequest.DryRun = requests.NewBoolean(commons.AliCloudDryRun)
 
 	runInstanceRequest.IoOptimized = "none"
+
+	runInstanceRequest.VSwitchId = switchResponse.VSwitchId
 
 	instanceResponse, err := client.RunInstances(runInstanceRequest)
 
