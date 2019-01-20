@@ -2,8 +2,8 @@ package alicloud
 
 import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
-	"zig-cloud/services"
 	"zig-cloud/helpers"
+	"zig-cloud/commons"
 )
 
 type CloudProvider struct {
@@ -16,22 +16,26 @@ func (provider *CloudProvider) ConfigureClient() {
 
 }
 
-func (provider *CloudProvider) CreateInstance(request services.Request) services.Response {
-	createInstanceRequest := &ecs.CreateInstanceRequest{}
+func (provider *CloudProvider) CreateInstance(request *commons.CreateInstanceRequest) (*commons.CreateInstanceResponse,error) {
 	client := provider.GetClient()
+	createInstanceRequest := ecs.CreateCreateInstanceRequest()
 	response, err := client.CreateInstance(createInstanceRequest)
 	if err == nil {
-		return helpers.GetServiceResponse(response)
+		return helpers.GetCreateInstanceResponse(response), nil
 	}else{
-		return services.Response{}
+		return nil, err
 	}
 }
 
-func (provider *CloudProvider) RunInstances(request services.Request) services.Response {
+func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse, error) {
 	client := provider.GetClient()
-	runInstancesRequest := ecs.RunInstancesRequest{}
-	client.RunInstances(&runInstancesRequest)
-	return services.Response{}
+	runInstancesRequest := ecs.CreateRunInstancesRequest()
+	response, err := client.RunInstances(runInstancesRequest)
+	if err == nil {
+		return helpers.GetRunInstancesResponse(response), nil
+	} else {
+		return nil, err
+	}
 }
 
 func (provider *CloudProvider) GetClient()  *ecs.Client {

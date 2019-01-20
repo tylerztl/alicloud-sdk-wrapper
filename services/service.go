@@ -8,8 +8,8 @@ import (
 // define all kinds of services
 
 type Provider interface {
-	CreateInstance(request Request) Response
-	RunInstances(request Request) Response
+	CreateInstance(request *commons.CreateInstanceRequest) (*commons.CreateInstanceResponse, error)
+	RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse,error)
 }
 
 func NewAliCloudProvider() Provider {

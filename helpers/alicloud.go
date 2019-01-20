@@ -2,9 +2,13 @@ package helpers
 
 import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
-	"zig-cloud/services"
+	"zig-cloud/commons"
 )
 
-func GetServiceResponse(response *ecs.CreateInstanceResponse) services.Response {
-	return services.Response{}
+func GetCreateInstanceResponse(response *ecs.CreateInstanceResponse) *commons.CreateInstanceResponse {
+	return &commons.CreateInstanceResponse{}
+}
+
+func GetRunInstancesResponse(response *ecs.RunInstancesResponse) *commons.RunInstancesResponse {
+	return &commons.RunInstancesResponse{}
 }
