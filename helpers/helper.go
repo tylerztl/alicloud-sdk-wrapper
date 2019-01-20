@@ -5,7 +5,7 @@ import (
 	"zig-cloud/commons"
 	"math/rand"
 	"time"
-	"strings"
+	"bytes"
 )
 
 // define the helper functions
@@ -26,7 +26,7 @@ func GenerateRandomString() string {
 	rand.Seed(time.Now().UnixNano())
 	chars := []rune("abcdefghijklmnopqrstuvwxyz" + "0123456789")
 	length := 5
-	b := new(strings.Builder)
+	b := new(bytes.Buffer)
 	for i := 0; i < length; i++ {
 		b.WriteRune(chars[rand.Intn(len(chars))])
 	}
