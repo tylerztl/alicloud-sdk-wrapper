@@ -4,16 +4,15 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"zig-cloud/helpers"
 	"zig-cloud/commons"
+	"zig-cloud/services"
 )
 
 type CloudProvider struct {
-	regionId string
-	accessKeyId string
-	accessKeySecret string
+	config *services.AliCloudConfig
 }
 
-func (provider *CloudProvider) ConfigureClient() {
-
+func (provider *CloudProvider) ConfigureClient(config *services.AliCloudConfig) {
+	provider.config = config
 }
 
 func (provider *CloudProvider) CreateInstance(request *commons.CreateInstanceRequest) (*commons.CreateInstanceResponse,error) {
@@ -30,6 +29,7 @@ func (provider *CloudProvider) CreateInstance(request *commons.CreateInstanceReq
 func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse, error) {
 	client := provider.GetClient()
 	runInstancesRequest := ecs.CreateRunInstancesRequest()
+
 	response, err := client.RunInstances(runInstancesRequest)
 	if err == nil {
 		return helpers.GetRunInstancesResponse(response), nil
@@ -39,7 +39,8 @@ func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest
 }
 
 func (provider *CloudProvider) GetClient()  *ecs.Client {
-	client, err := ecs.NewClientWithAccessKey(provider.regionId, provider.accessKeyId, provider.accessKeySecret)
+	config := provider.config
+	client, err := ecs.NewClientWithAccessKey(config.RegionId, config.AccessKeyId, config.AccessKeySecret)
 	if err == nil {
 		return client
 	}else {
