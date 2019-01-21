@@ -10,6 +10,58 @@ import (
 	"time"
 )
 
+func TestAliCloudDescribeZones(t *testing.T) {
+	client := GetClient()
+	describeZonesRequest := ecs.CreateDescribeZonesRequest()
+	describeZonesRequest.RegionId = "cn-huhehaote"
+	describeZonesRequest.InstanceChargeType = "PrePaid"
+	describeZonesResponse, err := client.DescribeZones(describeZonesRequest)
+	if err == nil {
+		fmt.Println(">>> no errors")
+		fmt.Println(describeZonesResponse.GetHttpContentString())
+		//fmt.Println(describeZonesResponse.Zones)
+		zoneId := describeZonesResponse.Zones.Zone[0].ZoneId
+		fmt.Println(">>>> zone id " + zoneId)
+	} else {
+		fmt.Println(">>> errors happened")
+		t.Error(err)
+	}
+}
+
+func TestAliCloudCreateSwitch(t *testing.T) {
+	client := GetClient()
+
+	vpcRequest := ecs.CreateCreateVpcRequest()
+	vpcRequest.VpcName = "BaaSVPC"
+	vpcRequest.CidrBlock = "172.16.0.0/12"
+
+	vpcResponse, err := client.CreateVpc(vpcRequest)
+
+	if err == nil {
+		fmt.Println(vpcResponse.GetHttpContentString())
+	} else {
+		t.Error(err)
+		fmt.Println(err)
+	}
+
+	time.Sleep(time.Duration(5) * time.Second)
+
+	switchRequest := ecs.CreateCreateVSwitchRequest()
+	switchRequest.VpcId = vpcResponse.VpcId
+	switchRequest.CidrBlock = "172.16.0.0/24"
+	switchRequest.ZoneId = "cn-huhehaote-a"
+	switchResponse, err := client.CreateVSwitch(switchRequest)
+
+	if err == nil {
+		fmt.Println(">>> no errors")
+		fmt.Println(switchResponse.GetHttpContentString())
+	} else {
+		fmt.Println(">>> errors happened")
+		t.Error(err)
+		fmt.Println(err)
+	}
+}
+
 func TestAliCloudRunInstances(t *testing.T) {
 	client := GetClient()
 
@@ -23,19 +75,36 @@ func TestAliCloudRunInstances(t *testing.T) {
 		fmt.Println(vpcResponse.GetHttpContentString())
 	}
 
-	time.Sleep(time.Duration(10) * time.Second)
+	time.Sleep(time.Duration(5) * time.Second)
+
+	describeZonesRequest := ecs.CreateDescribeZonesRequest()
+	describeZonesRequest.RegionId = "cn-huhehaote"
+	describeZonesRequest.InstanceChargeType = "PrePaid"
+
+	describeZonesResponse, err := client.DescribeZones(describeZonesRequest)
+
+	if err == nil {
+		fmt.Println(describeZonesResponse.GetHttpContentString())
+		zoneId := describeZonesResponse.Zones.Zone[0].ZoneId
+		fmt.Println(">>>> zone id " + zoneId)
+	}else {
+		fmt.Println(err)
+	}
 
 	switchRequest := ecs.CreateCreateVSwitchRequest()
 	switchRequest.VpcId = vpcResponse.VpcId
 	switchRequest.CidrBlock = "172.16.0.0/24"
+	switchRequest.ZoneId = "cn-huhehaote-a"
 
 	switchResponse, err := client.CreateVSwitch(switchRequest)
 
 	if err == nil {
 		fmt.Println(switchResponse.GetHttpContentString())
+	}else{
+		fmt.Println(err)
 	}
 
-	time.Sleep(time.Duration(10) * time.Second)
+	time.Sleep(time.Duration(5) * time.Second)
 
 	request := ecs.CreateCreateSecurityGroupRequest()
 	request.SecurityGroupName = helpers.GenerateSecurityGroupName()
