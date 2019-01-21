@@ -9,11 +9,11 @@ import (
 )
 
 type CloudProvider struct {
-	config *services.AliCloudConfig
+	Config *services.AliCloudConfig
 }
 
 func (provider *CloudProvider) ConfigureClient(config *services.AliCloudConfig) {
-	provider.config = config
+	provider.Config = config
 }
 
 func (provider *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*commons.CreateVpcResponse, error) {
@@ -41,7 +41,7 @@ func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest
 }
 
 func (provider *CloudProvider) GetClient()  *ecs.Client {
-	config := provider.config
+	config := provider.Config
 	client, err := ecs.NewClientWithAccessKey(config.RegionId, config.AccessKeyId, config.AccessKeySecret)
 	if err == nil {
 		return client
