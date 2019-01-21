@@ -1,6 +1,11 @@
 package controllers
 
-import "github.com/astaxie/beego"
+import (
+	"github.com/astaxie/beego"
+	"zig-cloud/commons"
+	"encoding/json"
+	"zig-cloud/services"
+)
 
 type CloudController struct {
 	beego.Controller
@@ -13,8 +18,18 @@ type CloudController struct {
 // @Failure 403
 // @router /vpc [post]
 func (cloud *CloudController) CreateVPC(){
-	cloud.Data["json"] = map[string]string{}
-	cloud.ServeJSON()
+	createVpcRequest := new(commons.CreateVpcRequest)
+	json.Unmarshal(cloud.Ctx.Input.RequestBody, createVpcRequest)
+	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	createVpcResponse, err := cloudProvider.CreateVpc(createVpcRequest)
+	if err == nil {
+		responseData := make(map[string]string)
+		responseData["VpcId"] = createVpcResponse.VpcId
+		cloud.Data["json"] = responseData
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403,err.Error())
+	}
 }
 
 // @Title CreateVSwitch
@@ -24,8 +39,18 @@ func (cloud *CloudController) CreateVPC(){
 // @Failure 403
 // @router /vswitch [post]
 func (cloud *CloudController) CreateVSwitch(){
-	cloud.Data["json"] = map[string]string{}
-	cloud.ServeJSON()
+	createVSwitchRequest := new(commons.CreateVSwitchRequest)
+	json.Unmarshal(cloud.Ctx.Input.RequestBody, createVSwitchRequest)
+	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	createVSwitchResponse, err := cloudProvider.CreateVSwitch(createVSwitchRequest)
+	if err == nil {
+		responseData := make(map[string]string)
+		responseData["VSwitchId"] = createVSwitchResponse.VSwitchId
+		cloud.Data["json"] = responseData
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403,err.Error())
+	}
 }
 
 
@@ -36,11 +61,19 @@ func (cloud *CloudController) CreateVSwitch(){
 // @Failure 403
 // @router /securitygroup [post]
 func (cloud *CloudController) CreateSecurityGroup(){
-	cloud.Data["json"] = map[string]string{}
-	cloud.ServeJSON()
+	createSecurityGroupRequest := new(commons.CreateSecurityGroupRequest)
+	json.Unmarshal(cloud.Ctx.Input.RequestBody, createSecurityGroupRequest)
+	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	createSecurityGroupResponse, err := cloudProvider.CreateSecurityGroup(createSecurityGroupRequest)
+	if err == nil {
+		responseData := make(map[string]string)
+		responseData["SecurityGroupId"] = createSecurityGroupResponse.SecurityGroupId
+		cloud.Data["json"] = responseData
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403,err.Error())
+	}
 }
-
-
 
 // @Title RunInstances
 // @Description run instances
@@ -49,8 +82,14 @@ func (cloud *CloudController) CreateSecurityGroup(){
 // @Failure 403
 // @router /runinstances [post]
 func (cloud *CloudController) RunInstances(){
-	dataMap := make(map[string]string)
-	dataMap["instances"] = "a,b,c"
-	cloud.Data["json"] = dataMap
-	cloud.ServeJSON()
+	runInstancesRequest := new(commons.RunInstancesRequest)
+	json.Unmarshal(cloud.Ctx.Input.RequestBody, runInstancesRequest)
+	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	runInstancesResponse, err := cloudProvider.RunInstances(runInstancesRequest)
+	if err == nil {
+		cloud.Data["json"] = runInstancesResponse.Instances
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403,err.Error())
+	}
 }

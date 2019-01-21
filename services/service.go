@@ -9,7 +9,7 @@ import (
 
 type Provider interface {
 	CreateVpc(request *commons.CreateVpcRequest) (*commons.CreateVpcResponse, error)
-	CreateVSwitch(request *commons.CreateVSwitchRequest) (*commons.CreateVpcResponse, error)
+	CreateVSwitch(request *commons.CreateVSwitchRequest) (*commons.CreateVSwitchResponse, error)
 	CreateSecurityGroup(request *commons.CreateSecurityGroupRequest) (*commons.CreateSecurityGroupResponse, error)
 	RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse,error)
 }

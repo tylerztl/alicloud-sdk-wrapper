@@ -20,7 +20,7 @@ func (provider *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*co
 	return nil,nil
 }
 
-func (provider *CloudProvider) CreateVSwitch(request *commons.CreateVSwitchRequest) (*commons.CreateVpcResponse, error) {
+func (provider *CloudProvider) CreateVSwitch(request *commons.CreateVSwitchRequest) (*commons.CreateVSwitchResponse, error) {
 	return nil,nil
 }
 
