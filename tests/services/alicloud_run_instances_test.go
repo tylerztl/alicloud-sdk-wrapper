@@ -84,7 +84,7 @@ func TestAliCloudRunInstances(t *testing.T) {
 	describeZonesResponse, err := client.DescribeZones(describeZonesRequest)
 
 	if err == nil {
-		fmt.Println(describeZonesResponse.GetHttpContentString())
+		//fmt.Println(describeZonesResponse.GetHttpContentString())
 		zoneId := describeZonesResponse.Zones.Zone[0].ZoneId
 		fmt.Println(">>>> zone id " + zoneId)
 	}else {
@@ -146,6 +146,8 @@ func TestAliCloudRunInstances(t *testing.T) {
 	runInstanceRequest.InstanceChargeType = commons.AliCloudInstanceChargeType
 	runInstanceRequest.Amount = requests.NewInteger(commons.AliCloudInstanceAmount)
 	runInstanceRequest.DryRun = requests.NewBoolean(commons.AliCloudDryRun)
+	runInstanceRequest.PeriodUnit = "Month"
+	runInstanceRequest.Period = requests.NewInteger(12)
 
 	runInstanceRequest.IoOptimized = "none"
 
