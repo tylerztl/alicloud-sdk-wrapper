@@ -23,6 +23,7 @@ const (
 	AliCloudSecurityGroupName string = "bass-sg"
 	AliCloudSecurityGroupDescription string = "It is applied to BaaS instances"
 	AliCloudSecurityGroupRuleName string = "baas-sg-rule"
+	AliCloudSecurityGroupRuleDescription string = "baas and blockchain network"
 
 	// instance
 	AliCloudInstanceType string = "ecs.c5.large"

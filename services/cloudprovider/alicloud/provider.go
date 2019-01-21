@@ -7,6 +7,7 @@ import (
 	"zig-cloud/services"
 	"github.com/astaxie/beego"
 	"errors"
+	"time"
 )
 
 type CloudProvider struct {
@@ -103,8 +104,9 @@ func (provider *CloudProvider) CreateSecurityGroup(request *commons.CreateSecuri
 		return nil, err
 	}else {
 		securityGroupId := securityGroupResponse.SecurityGroupId
-		authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest();
+		authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest()
 		authorizeSecurityGroupRequest.SecurityGroupId = securityGroupId
+		authorizeSecurityGroupRequest.Description = commons.AliCloudSecurityGroupRuleDescription
 		authorizeSecurityGroupRequest.NicType = "intranet"
 		authorizeSecurityGroupRequest.IpProtocol = "tcp"
 		authorizeSecurityGroupRequest.Policy = "accept"
@@ -129,16 +131,56 @@ func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest
 	runInstancesRequest := ecs.CreateRunInstancesRequest()
 	helpers.TransferValuesBetweenRequest(runInstancesRequest,request)
 	runInstancesResponse, err := client.RunInstances(runInstancesRequest)
+	time.Sleep(time.Duration(5) * time.Second)
 	if err == nil {
 		instanceIdSet := runInstancesResponse.InstanceIdSets.InstanceIdSet
 		instances := make(map[string]map[string]string)
-		for _, id := range instanceIdSet {
+		for _, instanceId := range instanceIdSet {
 			mapData := make(map[string]string)
-			instances[id] = mapData
+			instanceRequest := ecs.CreateDescribeInstanceAttributeRequest()
+			instanceRequest.InstanceId = instanceId
+			instanceResponse, err := client.DescribeInstanceAttribute(instanceRequest)
+			if err == nil {
+				if len(instanceResponse.PublicIpAddress.IpAddress) > 0 {
+					mapData["public-ip"] = instanceResponse.PublicIpAddress.IpAddress[0]
+				}
+				mapData["instance-name"] = instanceResponse.InstanceName
+			}
+			instances[instanceId] = mapData
 		}
 		return &commons.RunInstancesResponse{Instances:instances}, nil
 	} else {
 		return nil, err
+	}
+}
+
+func (provider *CloudProvider) DeleteInstance(instanceId string) {
+	client, err := provider.GetClient()
+	if err == nil {
+		request := ecs.CreateDeleteInstanceRequest()
+		request.InstanceId = instanceId
+		client.DeleteInstance(request)
+	}
+}
+
+func (provider *CloudProvider) GetZoneId(regionId,instanceChargeType string ) string {
+	client, err := provider.GetClient()
+	if err == nil {
+		describeZonesRequest := ecs.CreateDescribeZonesRequest()
+		describeZonesRequest.RegionId = regionId
+		describeZonesRequest.InstanceChargeType = instanceChargeType
+		describeZonesResponse, err := client.DescribeZones(describeZonesRequest)
+		if err == nil {
+			if len(describeZonesResponse.Zones.Zone) > 0 {
+				return describeZonesResponse.Zones.Zone[0].ZoneId
+			}else {
+				return commons.AliCloudZoneId
+			}
+		}else {
+			return commons.AliCloudZoneId
+		}
+	}else {
+		return commons.AliCloudZoneId
 	}
 }
 
