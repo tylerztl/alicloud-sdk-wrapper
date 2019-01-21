@@ -24,7 +24,7 @@ const (
 	AliCloudInternetChargeType string = "PayByBandwidth"
 	AliCloudInternetMaxBandwidthOut int = 100
 	AliCloudInstanceHostName string = "instance-baas"
-	AliCloudInstancePassword string = "passw0rd"
+	AliCloudInstancePassword string = "Pass@w0rd"
 	AliCloudInstanceChargeType string = "PrePaid"
 	AliCloudInstanceAmount int = 1
 	AliCloudDryRun bool = true
