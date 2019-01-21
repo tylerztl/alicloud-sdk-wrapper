@@ -22,10 +22,10 @@ const (
 	AliCloudInstanceName string = "bass-instance"
 	AliCloudInstanceDescription string = "This instance is created by BaaS"
 	AliCloudInternetChargeType string = "PayByBandwidth"
-	AliCloudInternetMaxBandwidthOut int = 100
+	AliCloudInternetMaxBandwidthOut int = 1
 	AliCloudInstanceHostName string = "instance-baas"
 	AliCloudInstancePassword string = "Pass@w0rd"
-	AliCloudInstanceChargeType string = "PrePaid"
+	AliCloudInstanceChargeType string = "PostPaid"
 	AliCloudInstanceAmount int = 1
 	AliCloudDryRun bool = false
 )

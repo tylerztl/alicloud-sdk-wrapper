@@ -147,7 +147,7 @@ func TestAliCloudRunInstances(t *testing.T) {
 	runInstanceRequest.Amount = requests.NewInteger(commons.AliCloudInstanceAmount)
 	runInstanceRequest.DryRun = requests.NewBoolean(commons.AliCloudDryRun)
 	runInstanceRequest.PeriodUnit = "Month"
-	runInstanceRequest.Period = requests.NewInteger(12)
+	runInstanceRequest.Period = requests.NewInteger(1)
 
 	runInstanceRequest.IoOptimized = "optimized"
 
