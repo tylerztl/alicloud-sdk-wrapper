@@ -7,6 +7,7 @@ import (
 	"zig-cloud/commons"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"zig-cloud/helpers"
+	"time"
 )
 
 func TestAliCloudRunInstances(t *testing.T) {
@@ -22,8 +23,9 @@ func TestAliCloudRunInstances(t *testing.T) {
 		fmt.Println(vpcResponse.GetHttpContentString())
 	}
 
-	switchRequest := ecs.CreateCreateVSwitchRequest()
+	time.Sleep(time.Duration(10) * time.Second)
 
+	switchRequest := ecs.CreateCreateVSwitchRequest()
 	switchRequest.VpcId = vpcResponse.VpcId
 	switchRequest.CidrBlock = "172.16.0.0/24"
 
@@ -32,6 +34,8 @@ func TestAliCloudRunInstances(t *testing.T) {
 	if err == nil {
 		fmt.Println(switchResponse.GetHttpContentString())
 	}
+
+	time.Sleep(time.Duration(10) * time.Second)
 
 	request := ecs.CreateCreateSecurityGroupRequest()
 	request.SecurityGroupName = helpers.GenerateSecurityGroupName()
