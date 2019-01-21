@@ -1,12 +1,23 @@
 package commons
 
-// define the constant variables here
 
 const (
 	SeparatorHype string = "-"
+	ValueEmptry = ""
 )
 
 const (
+
+	AliCloudRegionId string = "cn-huhehaote"
+	AliCloudZoneId string = "cn-huhehaote-a"
+
+	// VPC
+	AliCloudVPCName string = "baas-vpc"
+	AliCloudVPCCidrBlock string = "172.16.0.0/12"
+
+	// virtual switch
+	AliCloudVSwitchName string = "baas-vswitch"
+	AliCloudSwitchCidrBlock string = "172.16.0.0/24"
 
 	// security group
 	AliCloudSecurityGroupName string = "bass-sg"
@@ -28,4 +39,7 @@ const (
 	AliCloudInstanceChargeType string = "PostPaid"
 	AliCloudInstanceAmount int = 1
 	AliCloudDryRun bool = false
+
+	// error messages
+	AliCloudErrorMessageVPC string = "no vpc"
 )

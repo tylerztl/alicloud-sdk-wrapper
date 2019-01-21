@@ -16,6 +16,15 @@ type Provider interface {
 	RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse,error)
 }
 
+func GetProviderByType(providerType string) Provider {
+	switch providerType {
+	case commons.CloudProviderAliCloud:
+		return NewAliCloudProvider()
+	default:
+		return NewAliCloudProvider()
+	}
+}
+
 func NewAliCloudProvider() Provider {
 	var RegionId,  AccessKeyId, AccessKeySecret string
 	useEnv,err := beego.AppConfig.Bool(commons.UseEnv)
@@ -29,16 +38,8 @@ func NewAliCloudProvider() Provider {
 		AccessKeyId = beego.AppConfig.String(commons.AccessKeyId)
 		AccessKeySecret = beego.AppConfig.String(commons.AccessKeySecret)
 	}
+
 	config := &AliCloudConfig{RegionId:RegionId,AccessKeyId:AccessKeyId,AccessKeySecret:AccessKeySecret}
 	provider := &alicloud.CloudProvider{Config:config}
 	return provider
-}
-
-func GetProviderByType(providerType string) Provider {
-	switch providerType {
-	case commons.CloudProviderAliCloud:
-		return NewAliCloudProvider()
-	default:
-		return NewAliCloudProvider()
-	}
 }
