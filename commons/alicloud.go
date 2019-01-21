@@ -27,5 +27,5 @@ const (
 	AliCloudInstancePassword string = "Pass@w0rd"
 	AliCloudInstanceChargeType string = "PrePaid"
 	AliCloudInstanceAmount int = 1
-	AliCloudDryRun bool = true
+	AliCloudDryRun bool = false
 )
