@@ -149,7 +149,7 @@ func TestAliCloudRunInstances(t *testing.T) {
 	runInstanceRequest.PeriodUnit = "Month"
 	runInstanceRequest.Period = requests.NewInteger(12)
 
-	runInstanceRequest.IoOptimized = "none"
+	runInstanceRequest.IoOptimized = "optimized"
 
 	runInstanceRequest.VSwitchId = switchResponse.VSwitchId
 
