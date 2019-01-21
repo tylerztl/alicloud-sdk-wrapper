@@ -40,5 +40,5 @@ type RunInstancesRequest struct {
 }
 
 type RunInstancesResponse struct {
-	Instances map[string]string
+	Instances map[string]map[string]string
 }

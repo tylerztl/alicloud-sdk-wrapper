@@ -3,7 +3,7 @@ package commons
 
 const (
 	SeparatorHype string = "-"
-	ValueEmptry = ""
+	ValueEmpty = ""
 )
 
 const (
