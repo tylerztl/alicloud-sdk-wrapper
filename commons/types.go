@@ -1,18 +1,44 @@
 package commons
 
-type CreateInstanceRequest struct {
 
+type CreateVpcRequest struct {
+	VpcName string
+	RegionId string
+	CidrBlock string
 }
 
-type CreateInstanceResponse struct {
+type CreateVpcResponse struct {
+	VpcId string
+}
 
+type CreateVSwitchRequest struct {
+	VpcId string
+	VSwitchName string
+	CidrBlock string
+	ZoneId string
+}
+
+type CreateVSwitchResponse struct {
+	VSwitchId string `json:"VSwitchId" xml:"VSwitchId"`
+}
+
+type CreateSecurityGroupRequest struct {
+	SecurityGroupName string
+
+	VpcId string
+}
+
+type CreateSecurityGroupResponse struct {
+	SecurityGroupId string `json:"SecurityGroupId" xml:"SecurityGroupId"`
 }
 
 type RunInstancesRequest struct {
-
-	is_outdated bool
+	ImageId string
+	VpcId string
+	SecurityGroupId string
+	VSwitchId string
 }
 
 type RunInstancesResponse struct {
-
+	Instances map[string]string
 }

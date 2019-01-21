@@ -8,7 +8,9 @@ import (
 // define all kinds of services
 
 type Provider interface {
-	CreateInstance(request *commons.CreateInstanceRequest) (*commons.CreateInstanceResponse, error)
+	CreateVpc(request *commons.CreateVpcRequest) (*commons.CreateVpcResponse, error)
+	CreateVSwitch(request *commons.CreateVSwitchRequest) (*commons.CreateVpcResponse, error)
+	CreateSecurityGroup(request *commons.CreateSecurityGroupRequest) (*commons.CreateSecurityGroupResponse, error)
 	RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse,error)
 }
 

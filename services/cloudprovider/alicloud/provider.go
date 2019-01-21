@@ -16,15 +16,16 @@ func (provider *CloudProvider) ConfigureClient(config *services.AliCloudConfig) 
 	provider.config = config
 }
 
-func (provider *CloudProvider) CreateInstance(request *commons.CreateInstanceRequest) (*commons.CreateInstanceResponse,error) {
-	client := provider.GetClient()
-	createInstanceRequest := ecs.CreateCreateInstanceRequest()
-	response, err := client.CreateInstance(createInstanceRequest)
-	if err == nil {
-		return helpers.GetCreateInstanceResponse(response), nil
-	}else{
-		return nil, err
-	}
+func (provider *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*commons.CreateVpcResponse, error) {
+	return nil,nil
+}
+
+func (provider *CloudProvider) CreateVSwitch(request *commons.CreateVSwitchRequest) (*commons.CreateVpcResponse, error) {
+	return nil,nil
+}
+
+func (provider *CloudProvider) CreateSecurityGroup(request *commons.CreateSecurityGroupRequest) (*commons.CreateSecurityGroupResponse, error) {
+	return nil,nil
 }
 
 func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse, error) {
