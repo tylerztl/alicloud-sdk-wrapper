@@ -30,17 +30,23 @@ const (
 	AliCloudImageId string = "ubuntu_16_0402_64_20G_alibase_20180409.vhd"
 	AliCloudSystemDiskCategory string = "cloud_efficiency"
 	AliCloudSystemDiskSize string = "40"
-	AliCloudSecurityGroupId string = ""
+	AliCloudSecurityGroupId string = "system"
 	AliCloudInstanceName string = "bass-instance"
 	AliCloudInstanceDescription string = "This instance is created by BaaS"
 	AliCloudInternetChargeType string = "PayByBandwidth"
 	AliCloudInternetMaxBandwidthOut int = 1
 	AliCloudInstanceHostName string = "instance-baas"
 	AliCloudInstancePassword string = "Pass@w0rd"
-	AliCloudInstanceChargeType string = "PostPaid"
+	AliCloudInstanceChargeTypePrePaid string = "PrePaid"
+	AliCloudInstanceChargeTypePostPaid string = "PostPaid"
+	AliCloudInstanceChargeTypePeriodUnit string = "Month"
+	AliCloudInstanceChargeTypePeriod int = 1
 	AliCloudInstanceAmount int = 1
+	AliCloudIoOptimized string = "optimized"
 	AliCloudDryRun bool = false
 
 	// error messages
 	AliCloudErrorMessageVPC string = "no vpc"
+	AliCloudErrorMessageInvalidData string = "invalid data"
+
 )

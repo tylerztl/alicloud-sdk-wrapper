@@ -143,7 +143,7 @@ func TestAliCloudRunInstances(t *testing.T) {
 	runInstanceRequest.InternetMaxBandwidthOut = requests.NewInteger(commons.AliCloudInternetMaxBandwidthOut)
 	runInstanceRequest.HostName = commons.AliCloudInstanceHostName
 	runInstanceRequest.Password = commons.AliCloudInstancePassword
-	runInstanceRequest.InstanceChargeType = commons.AliCloudInstanceChargeType
+	runInstanceRequest.InstanceChargeType = commons.AliCloudInstanceChargeTypePostPaid
 	runInstanceRequest.Amount = requests.NewInteger(commons.AliCloudInstanceAmount)
 	runInstanceRequest.DryRun = requests.NewBoolean(commons.AliCloudDryRun)
 	runInstanceRequest.PeriodUnit = "Month"

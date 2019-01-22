@@ -34,9 +34,12 @@ type CreateSecurityGroupResponse struct {
 
 type RunInstancesRequest struct {
 	ImageId string
+	InstanceType string
+	InstanceChargeType string
 	VpcId string
 	SecurityGroupId string
 	VSwitchId string
+	Amount string
 }
 
 type RunInstancesResponse struct {

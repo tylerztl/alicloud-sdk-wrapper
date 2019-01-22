@@ -128,6 +128,9 @@ func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest
 	if err != nil {
 		return nil, err
 	}
+	if request.SecurityGroupId == commons.ValueEmpty || request.VSwitchId == commons.ValueEmpty {
+		return nil, errors.New(commons.AliCloudErrorMessageInvalidData)
+	}
 	runInstancesRequest := ecs.CreateRunInstancesRequest()
 	helpers.TransferValuesBetweenRequest(runInstancesRequest,request)
 	runInstancesResponse, err := client.RunInstances(runInstancesRequest)
