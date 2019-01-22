@@ -1,12 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "beego Test API",
-        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "title": "Zig Cloud API",
+        "description": "Manage IaaS Resources",
         "version": "1.0.0",
-        "termsOfService": "http://beego.me/",
+        "termsOfService": "http://zhigui.com",
         "contact": {
-            "email": "astaxie@gmail.com"
+            "email": "fanjiahe@zhigui.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -15,6 +15,118 @@
     },
     "basePath": "/v1",
     "paths": {
+        "/cloud/runinstances": {
+            "post": {
+                "tags": [
+                    "cloud"
+                ],
+                "description": "run instances",
+                "operationId": "CloudController.RunInstances",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/commons.RunInstancesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/cloud/securitygroup": {
+            "post": {
+                "tags": [
+                    "cloud"
+                ],
+                "description": "create SecurityGroup",
+                "operationId": "CloudController.CreateSecurityGroup",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/commons.CreateSecurityGroupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/cloud/vpc": {
+            "post": {
+                "tags": [
+                    "cloud"
+                ],
+                "description": "create VPC",
+                "operationId": "CloudController.CreateVPC",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/commons.CreateVpcRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/cloud/vswitch": {
+            "post": {
+                "tags": [
+                    "cloud"
+                ],
+                "description": "create VSwitch",
+                "operationId": "CloudController.CreateVSwitch",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/commons.CreateVSwitchRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/user/": {
             "get": {
                 "tags": [
@@ -198,6 +310,78 @@
         }
     },
     "definitions": {
+        "commons.CreateSecurityGroupRequest": {
+            "title": "CreateSecurityGroupRequest",
+            "type": "object",
+            "properties": {
+                "SecurityGroupName": {
+                    "type": "string"
+                },
+                "VpcId": {
+                    "type": "string"
+                }
+            }
+        },
+        "commons.CreateVSwitchRequest": {
+            "title": "CreateVSwitchRequest",
+            "type": "object",
+            "properties": {
+                "CidrBlock": {
+                    "type": "string"
+                },
+                "VSwitchName": {
+                    "type": "string"
+                },
+                "VpcId": {
+                    "type": "string"
+                },
+                "ZoneId": {
+                    "type": "string"
+                }
+            }
+        },
+        "commons.CreateVpcRequest": {
+            "title": "CreateVpcRequest",
+            "type": "object",
+            "properties": {
+                "CidrBlock": {
+                    "type": "string"
+                },
+                "RegionId": {
+                    "type": "string"
+                },
+                "VpcName": {
+                    "type": "string"
+                }
+            }
+        },
+        "commons.RunInstancesRequest": {
+            "title": "RunInstancesRequest",
+            "type": "object",
+            "properties": {
+                "Amount": {
+                    "type": "string"
+                },
+                "ImageId": {
+                    "type": "string"
+                },
+                "InstanceChargeType": {
+                    "type": "string"
+                },
+                "InstanceType": {
+                    "type": "string"
+                },
+                "SecurityGroupId": {
+                    "type": "string"
+                },
+                "VSwitchId": {
+                    "type": "string"
+                },
+                "VpcId": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "title": "User",
             "type": "object",
