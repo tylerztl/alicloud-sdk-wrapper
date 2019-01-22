@@ -4,17 +4,22 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"zig-cloud/helpers"
 	"zig-cloud/commons"
-	"zig-cloud/services"
 	"github.com/astaxie/beego"
 	"errors"
 	"time"
 )
 
-type CloudProvider struct {
-	Config *services.AliCloudConfig
+type AliCloudConfig struct {
+	RegionId string
+	AccessKeyId string
+	AccessKeySecret string
 }
 
-func (provider *CloudProvider) ConfigureClient(config *services.AliCloudConfig) {
+type CloudProvider struct {
+	Config *AliCloudConfig
+}
+
+func (provider *CloudProvider) ConfigureClient(config *AliCloudConfig) {
 	provider.Config = config
 }
 

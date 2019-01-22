@@ -39,7 +39,7 @@ func NewAliCloudProvider() Provider {
 		AccessKeySecret = beego.AppConfig.String(commons.AccessKeySecret)
 	}
 
-	config := &AliCloudConfig{RegionId:RegionId,AccessKeyId:AccessKeyId,AccessKeySecret:AccessKeySecret}
+	config := &alicloud.AliCloudConfig{RegionId:RegionId,AccessKeyId:AccessKeyId,AccessKeySecret:AccessKeySecret}
 	provider := &alicloud.CloudProvider{Config:config}
 	return provider
 }
