@@ -1,9 +1,8 @@
 package commons
 
-
 type CreateVpcRequest struct {
-	VpcName string
-	RegionId string
+	VpcName   string
+	RegionId  string
 	CidrBlock string
 }
 
@@ -12,10 +11,10 @@ type CreateVpcResponse struct {
 }
 
 type CreateVSwitchRequest struct {
-	VpcId string
+	VpcId       string
 	VSwitchName string
-	CidrBlock string
-	ZoneId string
+	CidrBlock   string
+	ZoneId      string
 }
 
 type CreateVSwitchResponse struct {
@@ -24,8 +23,7 @@ type CreateVSwitchResponse struct {
 
 type CreateSecurityGroupRequest struct {
 	SecurityGroupName string
-
-	VpcId string
+	VpcId             string
 }
 
 type CreateSecurityGroupResponse struct {
@@ -33,15 +31,20 @@ type CreateSecurityGroupResponse struct {
 }
 
 type RunInstancesRequest struct {
-	ImageId string
-	InstanceType string
+	ImageId            string
+	InstanceType       string
 	InstanceChargeType string
-	VpcId string
-	SecurityGroupId string
-	VSwitchId string
-	Amount string
+	VpcId              string
+	SecurityGroupId    string
+	VSwitchId          string
+	Amount             string
 }
 
 type RunInstancesResponse struct {
 	Instances map[string]map[string]string
+}
+
+type DescribeZonesResponse struct {
+	ZoneId    string
+	LocalName string
 }

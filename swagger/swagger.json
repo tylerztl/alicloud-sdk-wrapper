@@ -15,6 +15,23 @@
     },
     "basePath": "/v1",
     "paths": {
+        "/cloud/regions": {
+            "get": {
+                "tags": [
+                    "cloud"
+                ],
+                "description": "Query available regions",
+                "operationId": "CloudController.DescribeRegions",
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/cloud/runinstances": {
             "post": {
                 "tags": [
@@ -115,6 +132,32 @@
                         "schema": {
                             "$ref": "#/definitions/commons.CreateVSwitchRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/cloud/zones": {
+            "get": {
+                "tags": [
+                    "cloud"
+                ],
+                "description": "Query the available zones for the specified region",
+                "operationId": "CloudController.DescribeZones",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "regionId",
+                        "description": "The regionId for zones",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {

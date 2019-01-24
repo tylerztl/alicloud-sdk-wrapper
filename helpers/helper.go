@@ -1,25 +1,25 @@
 package helpers
 
 import (
+	"bytes"
 	"fmt"
-	"zig-cloud/commons"
 	"math/rand"
 	"time"
-	"bytes"
+	"zig-cloud/commons"
 )
 
 // define the helper functions
 
 func GenerateInstanceName() string {
-	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliCloudInstanceName, GenerateRandomString())
+	return fmt.Sprintf("%s"+commons.SeparatorHype+"%s", commons.AliCloudInstanceName, GenerateRandomString())
 }
 
-func GenerateSecurityGroupName() string  {
-	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliCloudSecurityGroupName, GenerateRandomString())
+func GenerateSecurityGroupName() string {
+	return fmt.Sprintf("%s"+commons.SeparatorHype+"%s", commons.AliCloudSecurityGroupName, GenerateRandomString())
 }
 
 func GenerateSecurityGroupRuleName() string {
-	return fmt.Sprintf("%s" + commons.SeparatorHype + "%s",commons.AliCloudSecurityGroupRuleName, GenerateRandomString())
+	return fmt.Sprintf("%s"+commons.SeparatorHype+"%s", commons.AliCloudSecurityGroupRuleName, GenerateRandomString())
 }
 
 func GenerateRandomString() string {

@@ -1,15 +1,32 @@
 package main
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/plugins/cors"
-	_ "github.com/mattn/go-sqlite3"
+	"encoding/json"
 	"zig-cloud/database"
 	_ "zig-cloud/routers"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego/plugins/cors"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func init() {
+	initLogger()
 	database.RegisterSQLite()
+}
+
+func initLogger() {
+	config := make(map[string]interface{})
+	config["filename"] = beego.AppConfig.String("logPath")
+	config["level"] = beego.LevelDebug
+
+	configStr, err := json.Marshal(config)
+	if nil != err {
+		panic(err)
+	}
+	err = beego.SetLogger(logs.AdapterFile, string(configStr))
+	beego.SetLogFuncCall(true)
 }
 
 func main() {

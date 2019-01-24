@@ -1,16 +1,16 @@
 package helpers
 
 import (
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"zig-cloud/commons"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 )
 
-
-func TransferValuesBetweenRequest(runInstancesRequest *ecs.RunInstancesRequest, request *commons.RunInstancesRequest){
+func TransferValuesBetweenRequest(runInstancesRequest *ecs.RunInstancesRequest, request *commons.RunInstancesRequest) {
 	if request.ImageId == commons.ValueEmpty {
 		runInstancesRequest.ImageId = commons.AliCloudImageId
-	}else {
+	} else {
 		runInstancesRequest.ImageId = request.ImageId
 	}
 	runInstancesRequest.SystemDiskCategory = commons.AliCloudSystemDiskCategory
@@ -20,7 +20,7 @@ func TransferValuesBetweenRequest(runInstancesRequest *ecs.RunInstancesRequest, 
 	runInstancesRequest.Description = commons.AliCloudInstanceDescription
 	if request.InstanceType == commons.ValueEmpty {
 		runInstancesRequest.InstanceType = commons.AliCloudInstanceType
-	}else {
+	} else {
 		runInstancesRequest.InstanceType = request.InstanceType
 	}
 	runInstancesRequest.InternetChargeType = commons.AliCloudInternetChargeType
@@ -29,7 +29,7 @@ func TransferValuesBetweenRequest(runInstancesRequest *ecs.RunInstancesRequest, 
 	runInstancesRequest.Password = commons.AliCloudInstancePassword
 	if request.InstanceChargeType == commons.ValueEmpty {
 		runInstancesRequest.InstanceChargeType = commons.AliCloudInstanceChargeTypePostPaid
-	}else {
+	} else {
 		runInstancesRequest.InstanceChargeType = request.InstanceChargeType
 	}
 	if runInstancesRequest.InstanceChargeType == commons.AliCloudInstanceChargeTypePrePaid {
@@ -38,7 +38,7 @@ func TransferValuesBetweenRequest(runInstancesRequest *ecs.RunInstancesRequest, 
 	}
 	if request.Amount == commons.ValueEmpty {
 		runInstancesRequest.Amount = requests.NewInteger(commons.AliCloudInstanceAmount)
-	}else {
+	} else {
 		runInstancesRequest.Amount = requests.Integer(request.Amount)
 	}
 	runInstancesRequest.IoOptimized = commons.AliCloudIoOptimized

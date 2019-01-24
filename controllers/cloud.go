@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
-	"zig-cloud/commons"
 	"encoding/json"
+	"zig-cloud/commons"
 	"zig-cloud/services"
+
+	"github.com/astaxie/beego"
 )
 
 type CloudController struct {
@@ -17,9 +18,12 @@ type CloudController struct {
 // @Success 200 {}
 // @Failure 403
 // @router /vpc [post]
-func (cloud *CloudController) CreateVPC(){
+func (cloud *CloudController) CreateVPC() {
 	createVpcRequest := new(commons.CreateVpcRequest)
-	json.Unmarshal(cloud.Ctx.Input.RequestBody, createVpcRequest)
+	err := json.Unmarshal(cloud.Ctx.Input.RequestBody, createVpcRequest)
+	if nil != err {
+		cloud.CustomAbort(403, err.Error())
+	}
 	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
 	createVpcResponse, err := cloudProvider.CreateVpc(createVpcRequest)
 	if err == nil {
@@ -28,7 +32,7 @@ func (cloud *CloudController) CreateVPC(){
 		cloud.Data["json"] = responseData
 		cloud.ServeJSON()
 	} else {
-		cloud.CustomAbort(403,err.Error())
+		cloud.CustomAbort(403, err.Error())
 	}
 }
 
@@ -38,9 +42,12 @@ func (cloud *CloudController) CreateVPC(){
 // @Success 200 {}
 // @Failure 403
 // @router /vswitch [post]
-func (cloud *CloudController) CreateVSwitch(){
+func (cloud *CloudController) CreateVSwitch() {
 	createVSwitchRequest := new(commons.CreateVSwitchRequest)
-	json.Unmarshal(cloud.Ctx.Input.RequestBody, createVSwitchRequest)
+	err := json.Unmarshal(cloud.Ctx.Input.RequestBody, createVSwitchRequest)
+	if nil != err {
+		cloud.CustomAbort(403, err.Error())
+	}
 	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
 	createVSwitchResponse, err := cloudProvider.CreateVSwitch(createVSwitchRequest)
 	if err == nil {
@@ -49,10 +56,9 @@ func (cloud *CloudController) CreateVSwitch(){
 		cloud.Data["json"] = responseData
 		cloud.ServeJSON()
 	} else {
-		cloud.CustomAbort(403,err.Error())
+		cloud.CustomAbort(403, err.Error())
 	}
 }
-
 
 // @Title CreateSecurityGroup
 // @Description create SecurityGroup
@@ -60,9 +66,12 @@ func (cloud *CloudController) CreateVSwitch(){
 // @Success 200 {}
 // @Failure 403
 // @router /securitygroup [post]
-func (cloud *CloudController) CreateSecurityGroup(){
+func (cloud *CloudController) CreateSecurityGroup() {
 	createSecurityGroupRequest := new(commons.CreateSecurityGroupRequest)
-	json.Unmarshal(cloud.Ctx.Input.RequestBody, createSecurityGroupRequest)
+	err := json.Unmarshal(cloud.Ctx.Input.RequestBody, createSecurityGroupRequest)
+	if nil != err {
+		cloud.CustomAbort(403, err.Error())
+	}
 	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
 	createSecurityGroupResponse, err := cloudProvider.CreateSecurityGroup(createSecurityGroupRequest)
 	if err == nil {
@@ -71,7 +80,7 @@ func (cloud *CloudController) CreateSecurityGroup(){
 		cloud.Data["json"] = responseData
 		cloud.ServeJSON()
 	} else {
-		cloud.CustomAbort(403,err.Error())
+		cloud.CustomAbort(403, err.Error())
 	}
 }
 
@@ -81,15 +90,52 @@ func (cloud *CloudController) CreateSecurityGroup(){
 // @Success 200 {}
 // @Failure 403
 // @router /runinstances [post]
-func (cloud *CloudController) RunInstances(){
+func (cloud *CloudController) RunInstances() {
 	runInstancesRequest := new(commons.RunInstancesRequest)
-	json.Unmarshal(cloud.Ctx.Input.RequestBody, runInstancesRequest)
+	err := json.Unmarshal(cloud.Ctx.Input.RequestBody, runInstancesRequest)
+	if nil != err {
+		cloud.CustomAbort(403, err.Error())
+	}
 	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
 	runInstancesResponse, err := cloudProvider.RunInstances(runInstancesRequest)
 	if err == nil {
 		cloud.Data["json"] = runInstancesResponse.Instances
 		cloud.ServeJSON()
 	} else {
-		cloud.CustomAbort(403,err.Error())
+		cloud.CustomAbort(403, err.Error())
+	}
+}
+
+// @Title DescribeRegions
+// @Description Query available regions
+// @Success 200 {}
+// @Failure 403
+// @router /regions [get]
+func (cloud *CloudController) DescribeRegions() {
+	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	describeRegionsResponse, err := cloudProvider.DescribeRegions()
+	if err == nil {
+		cloud.Data["json"] = describeRegionsResponse
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403, err.Error())
+	}
+}
+
+// @Title DescribeZones
+// @Description Query the available zones for the specified region
+// @Param	regionId		query 	string	true		"The regionId for zones"
+// @Success 200 {}
+// @Failure 403
+// @router /zones [get]
+func (cloud *CloudController) DescribeZones() {
+	regionId := cloud.Ctx.Input.Query("regionId")
+	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	describeZonesResponse, err := cloudProvider.DescribeZones(regionId)
+	if err == nil {
+		cloud.Data["json"] = describeZonesResponse
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403, err.Error())
 	}
 }
