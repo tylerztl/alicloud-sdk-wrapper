@@ -9,6 +9,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
+	"zig-cloud/commons"
 	"zig-cloud/controllers"
 )
 
@@ -19,9 +20,9 @@ func init() {
 				&controllers.UserController{},
 			),
 		),
-		beego.NSNamespace("/cloud",
+		beego.NSNamespace("/alicloud",
 			beego.NSInclude(
-				&controllers.CloudController{},
+				&controllers.CloudController{Provider: commons.AliCloud},
 			),
 		),
 	)

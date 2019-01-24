@@ -11,10 +11,10 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 basePath: /v1
 paths:
-  /cloud/regions:
+  /alicloud/regions:
     get:
       tags:
-      - cloud
+      - alicloud
       description: Query available regions
       operationId: CloudController.DescribeRegions
       responses:
@@ -22,10 +22,10 @@ paths:
           description: '{}'
         "403":
           description: ""
-  /cloud/runinstances:
+  /alicloud/runinstances:
     post:
       tags:
-      - cloud
+      - alicloud
       description: run instances
       operationId: CloudController.RunInstances
       parameters:
@@ -40,10 +40,10 @@ paths:
           description: '{}'
         "403":
           description: ""
-  /cloud/securitygroup:
+  /alicloud/securitygroup:
     post:
       tags:
-      - cloud
+      - alicloud
       description: create SecurityGroup
       operationId: CloudController.CreateSecurityGroup
       parameters:
@@ -58,10 +58,28 @@ paths:
           description: '{}'
         "403":
           description: ""
-  /cloud/vpc:
+  /alicloud/securitygroup/authorize:
     post:
       tags:
-      - cloud
+      - alicloud
+      description: Add a security group entry direction rule
+      operationId: CloudController.CreateAuthorizeSecurityGroup
+      parameters:
+      - in: body
+        name: body
+        description: body content
+        required: true
+        schema:
+          $ref: '#/definitions/commons.AuthorizeSecurityGroupRequest'
+      responses:
+        "200":
+          description: '{}'
+        "403":
+          description: ""
+  /alicloud/vpc:
+    post:
+      tags:
+      - alicloud
       description: create VPC
       operationId: CloudController.CreateVPC
       parameters:
@@ -76,10 +94,10 @@ paths:
           description: '{}'
         "403":
           description: ""
-  /cloud/vswitch:
+  /alicloud/vswitch:
     post:
       tags:
-      - cloud
+      - alicloud
       description: create VSwitch
       operationId: CloudController.CreateVSwitch
       parameters:
@@ -94,10 +112,10 @@ paths:
           description: '{}'
         "403":
           description: ""
-  /cloud/zones:
+  /alicloud/zones:
     get:
       tags:
-      - cloud
+      - alicloud
       description: Query the available zones for the specified region
       operationId: CloudController.DescribeZones
       parameters:
@@ -231,10 +249,22 @@ paths:
         "200":
           description: '{string} logout success'
 definitions:
+  commons.AuthorizeSecurityGroupRequest:
+    title: AuthorizeSecurityGroupRequest
+    type: object
+    properties:
+      PortRange:
+        type: string
+      RegionId:
+        type: string
+      SecurityGroupId:
+        type: string
   commons.CreateSecurityGroupRequest:
     title: CreateSecurityGroupRequest
     type: object
     properties:
+      RegionId:
+        type: string
       SecurityGroupName:
         type: string
       VpcId:
@@ -244,6 +274,8 @@ definitions:
     type: object
     properties:
       CidrBlock:
+        type: string
+      RegionId:
         type: string
       VSwitchName:
         type: string
@@ -273,11 +305,15 @@ definitions:
         type: string
       InstanceType:
         type: string
+      Password:
+        type: string
+      RegionId:
+        type: string
       SecurityGroupId:
         type: string
       VSwitchId:
         type: string
-      VpcId:
+      ZoneId:
         type: string
   models.User:
     title: User

@@ -2,20 +2,25 @@ package commons
 
 const (
 	SeparatorHype string = "-"
-	ValueEmpty           = ""
+	ValueEmpty    string = ""
+	// timeout for common product, ecs e.g.
+	DefaultTimeout       = 120
+	DefaultIntervalShort = 5
 )
 
 const (
 	AliCloudRegionId string = "cn-huhehaote"
 	AliCloudZoneId   string = "cn-huhehaote-a"
 
-	// VPC
-	AliCloudVPCName      string = "baas-vpc"
-	AliCloudVPCCidrBlock string = "172.16.0.0/12"
+	// vpc
+	AliCloudVpcName        string = "vpc-zig-cloud"
+	AliCloudVpcCidrBlock   string = "172.16.0.0/12"
+	AliCloudVpcDescription string = "This vpc is created by zig-cloud"
 
 	// virtual switch
-	AliCloudVSwitchName     string = "baas-vswitch"
-	AliCloudSwitchCidrBlock string = "172.16.0.0/24"
+	AliCloudVSwitchName        string = "vsw-zig-cloud"
+	AliCloudSwitchCidrBlock    string = "172.16.0.0/24"
+	AliCloudVSwitchDescription string = "This vswitch is created by zig-cloud"
 
 	// security group
 	AliCloudSecurityGroupName            string = "bass-sg"
@@ -33,7 +38,7 @@ const (
 	AliCloudInstanceDescription          string = "This instance is created by BaaS"
 	AliCloudInternetChargeType           string = "PayByBandwidth"
 	AliCloudInternetMaxBandwidthOut      int    = 1
-	AliCloudInstanceHostName             string = "instance-baas"
+	AliCloudInstanceHostName             string = "baas"
 	AliCloudInstancePassword             string = "Pass@w0rd"
 	AliCloudInstanceChargeTypePrePaid    string = "PrePaid"
 	AliCloudInstanceChargeTypePostPaid   string = "PostPaid"

@@ -9,6 +9,7 @@ import (
 )
 
 type CloudController struct {
+	Provider commons.CloudProvider
 	beego.Controller
 }
 
@@ -24,7 +25,7 @@ func (cloud *CloudController) CreateVPC() {
 	if nil != err {
 		cloud.CustomAbort(403, err.Error())
 	}
-	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	cloudProvider := services.GetProviderByType(cloud.Provider)
 	createVpcResponse, err := cloudProvider.CreateVpc(createVpcRequest)
 	if err == nil {
 		responseData := make(map[string]string)
@@ -48,7 +49,7 @@ func (cloud *CloudController) CreateVSwitch() {
 	if nil != err {
 		cloud.CustomAbort(403, err.Error())
 	}
-	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	cloudProvider := services.GetProviderByType(cloud.Provider)
 	createVSwitchResponse, err := cloudProvider.CreateVSwitch(createVSwitchRequest)
 	if err == nil {
 		responseData := make(map[string]string)
@@ -72,12 +73,32 @@ func (cloud *CloudController) CreateSecurityGroup() {
 	if nil != err {
 		cloud.CustomAbort(403, err.Error())
 	}
-	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	cloudProvider := services.GetProviderByType(cloud.Provider)
 	createSecurityGroupResponse, err := cloudProvider.CreateSecurityGroup(createSecurityGroupRequest)
 	if err == nil {
-		responseData := make(map[string]string)
-		responseData["SecurityGroupId"] = createSecurityGroupResponse.SecurityGroupId
-		cloud.Data["json"] = responseData
+		cloud.Data["json"] = createSecurityGroupResponse
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403, err.Error())
+	}
+}
+
+// @Title CreateAuthorizeSecurityGroup
+// @Description Add a security group entry direction rule
+// @Param	body	body 	commons.AuthorizeSecurityGroupRequest	true 	"body content"
+// @Success 200 {}
+// @Failure 403
+// @router /securitygroup/authorize [post]
+func (cloud *CloudController) CreateAuthorizeSecurityGroup() {
+	authorizeSecurityGroupRequest := new(commons.AuthorizeSecurityGroupRequest)
+	err := json.Unmarshal(cloud.Ctx.Input.RequestBody, authorizeSecurityGroupRequest)
+	if nil != err {
+		cloud.CustomAbort(403, err.Error())
+	}
+	cloudProvider := services.GetProviderByType(cloud.Provider)
+	authorizeSecurityGroupResponse, err := cloudProvider.CreateAuthorizeSecurityGroup(authorizeSecurityGroupRequest)
+	if err == nil {
+		cloud.Data["json"] = authorizeSecurityGroupResponse
 		cloud.ServeJSON()
 	} else {
 		cloud.CustomAbort(403, err.Error())
@@ -96,7 +117,7 @@ func (cloud *CloudController) RunInstances() {
 	if nil != err {
 		cloud.CustomAbort(403, err.Error())
 	}
-	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	cloudProvider := services.GetProviderByType(cloud.Provider)
 	runInstancesResponse, err := cloudProvider.RunInstances(runInstancesRequest)
 	if err == nil {
 		cloud.Data["json"] = runInstancesResponse.Instances
@@ -112,7 +133,7 @@ func (cloud *CloudController) RunInstances() {
 // @Failure 403
 // @router /regions [get]
 func (cloud *CloudController) DescribeRegions() {
-	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	cloudProvider := services.GetProviderByType(cloud.Provider)
 	describeRegionsResponse, err := cloudProvider.DescribeRegions()
 	if err == nil {
 		cloud.Data["json"] = describeRegionsResponse
@@ -130,7 +151,7 @@ func (cloud *CloudController) DescribeRegions() {
 // @router /zones [get]
 func (cloud *CloudController) DescribeZones() {
 	regionId := cloud.Ctx.Input.Query("regionId")
-	cloudProvider := services.GetProviderByType(commons.CloudProviderAliCloud)
+	cloudProvider := services.GetProviderByType(cloud.Provider)
 	describeZonesResponse, err := cloudProvider.DescribeZones(regionId)
 	if err == nil {
 		cloud.Data["json"] = describeZonesResponse

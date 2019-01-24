@@ -11,10 +11,11 @@ type CreateVpcResponse struct {
 }
 
 type CreateVSwitchRequest struct {
-	VpcId       string
 	VSwitchName string
-	CidrBlock   string
+	VpcId       string
 	ZoneId      string
+	RegionId    string
+	CidrBlock   string
 }
 
 type CreateVSwitchResponse struct {
@@ -22,6 +23,7 @@ type CreateVSwitchResponse struct {
 }
 
 type CreateSecurityGroupRequest struct {
+	RegionId          string
 	SecurityGroupName string
 	VpcId             string
 }
@@ -30,14 +32,26 @@ type CreateSecurityGroupResponse struct {
 	SecurityGroupId string `json:"SecurityGroupId" xml:"SecurityGroupId"`
 }
 
+type AuthorizeSecurityGroupRequest struct {
+	RegionId        string
+	SecurityGroupId string
+	PortRange       string
+}
+
+type AuthorizeSecurityGroupResponse struct {
+	RequestId string
+}
+
 type RunInstancesRequest struct {
+	RegionId           string
+	ZoneId             string
 	ImageId            string
 	InstanceType       string
-	InstanceChargeType string
-	VpcId              string
 	SecurityGroupId    string
 	VSwitchId          string
+	InstanceChargeType string
 	Amount             string
+	Password           string
 }
 
 type RunInstancesResponse struct {

@@ -11,18 +11,8 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type AliCloudConfig struct {
-	RegionId        string
-	AccessKeyId     string
-	AccessKeySecret string
-}
-
 type CloudProvider struct {
-	Config *AliCloudConfig
-}
-
-func (provider *CloudProvider) ConfigureClient(config *AliCloudConfig) {
-	provider.Config = config
+	Client *AliCloudClient
 }
 
 func (provider *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*commons.CreateVpcResponse, error) {
@@ -32,7 +22,7 @@ func (provider *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*co
 	}
 	vpcRequest := ecs.CreateCreateVpcRequest()
 	if request.VpcName == commons.ValueEmpty {
-		vpcRequest.VpcName = commons.AliCloudVPCName
+		vpcRequest.VpcName = commons.AliCloudVpcName
 	} else {
 		vpcRequest.VpcName = request.VpcName
 	}
@@ -42,10 +32,11 @@ func (provider *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*co
 		vpcRequest.RegionId = request.RegionId
 	}
 	if request.CidrBlock == commons.ValueEmpty {
-		vpcRequest.CidrBlock = commons.AliCloudVPCCidrBlock
+		vpcRequest.CidrBlock = commons.AliCloudVpcCidrBlock
 	} else {
 		vpcRequest.CidrBlock = request.CidrBlock
 	}
+	vpcRequest.Description = commons.AliCloudVpcDescription
 	vpcRequest.ClientToken = utils.GetUUIDV4()
 	vpcResponse, err := client.CreateVpc(vpcRequest)
 	if err == nil {
@@ -63,31 +54,40 @@ func (provider *CloudProvider) CreateVSwitch(request *commons.CreateVSwitchReque
 		return nil, err
 	}
 	switchRequest := ecs.CreateCreateVSwitchRequest()
-	if request.VpcId == commons.ValueEmpty {
-		return nil, errors.New(commons.AliCloudErrorMessageVPC)
-	} else {
-		switchRequest.VpcId = request.VpcId
-	}
 	if request.VSwitchName == commons.ValueEmpty {
 		switchRequest.VSwitchName = commons.AliCloudVSwitchName
 	} else {
 		switchRequest.VSwitchName = request.VSwitchName
+	}
+	if request.VpcId == commons.ValueEmpty {
+		return nil, errors.New(commons.AliCloudErrorMessageVPC)
+	} else {
+		switchRequest.VpcId = request.VpcId
 	}
 	if request.ZoneId == commons.ValueEmpty {
 		switchRequest.ZoneId = commons.AliCloudZoneId
 	} else {
 		switchRequest.ZoneId = request.ZoneId
 	}
+	if request.RegionId == commons.ValueEmpty {
+		switchRequest.RegionId = commons.AliCloudRegionId
+	} else {
+		switchRequest.RegionId = request.RegionId
+	}
 	if request.CidrBlock == commons.ValueEmpty {
 		switchRequest.CidrBlock = commons.AliCloudSwitchCidrBlock
 	} else {
 		switchRequest.CidrBlock = request.CidrBlock
 	}
+	switchRequest.Description = commons.AliCloudVSwitchDescription
+	switchRequest.ClientToken = utils.GetUUIDV4()
 	switchResponse, err := client.CreateVSwitch(switchRequest)
 	if err == nil {
+		beego.Debug("CreateVSwitch successful VSwitchId =", switchResponse.VSwitchId)
 		return &commons.CreateVSwitchResponse{VSwitchId: switchResponse.VSwitchId}, nil
 	} else {
-		return nil, err
+		beego.Error("CreateVSwitch failed:", err)
+		return nil, helpers.ParseError(err)
 	}
 }
 
@@ -97,6 +97,7 @@ func (provider *CloudProvider) CreateSecurityGroup(request *commons.CreateSecuri
 		return nil, err
 	}
 	securityGroupRequest := ecs.CreateCreateSecurityGroupRequest()
+	securityGroupRequest.RegionId = request.RegionId
 	if request.VpcId == commons.ValueEmpty {
 
 	} else {
@@ -108,29 +109,36 @@ func (provider *CloudProvider) CreateSecurityGroup(request *commons.CreateSecuri
 		securityGroupRequest.SecurityGroupName = request.SecurityGroupName
 	}
 	securityGroupRequest.Description = commons.AliCloudSecurityGroupDescription
+	securityGroupRequest.ClientToken = utils.GetUUIDV4()
 	securityGroupResponse, err := client.CreateSecurityGroup(securityGroupRequest)
+	if err != nil {
+		return nil, helpers.ParseError(err)
+	}
+	return &commons.CreateSecurityGroupResponse{SecurityGroupId: securityGroupResponse.SecurityGroupId}, nil
+}
 
+func (provider *CloudProvider) CreateAuthorizeSecurityGroup(request *commons.AuthorizeSecurityGroupRequest) (*commons.AuthorizeSecurityGroupResponse, error) {
+	client, err := provider.GetClient()
 	if err != nil {
 		return nil, err
-	} else {
-		securityGroupId := securityGroupResponse.SecurityGroupId
-		authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest()
-		authorizeSecurityGroupRequest.SecurityGroupId = securityGroupId
-		authorizeSecurityGroupRequest.Description = commons.AliCloudSecurityGroupRuleDescription
-		authorizeSecurityGroupRequest.NicType = "intranet"
-		authorizeSecurityGroupRequest.IpProtocol = "tcp"
-		authorizeSecurityGroupRequest.Policy = "accept"
-		authorizeSecurityGroupRequest.PortRange = "22/22"
-		authorizeSecurityGroupRequest.Priority = "1"
-		authorizeSecurityGroupRequest.SourceCidrIp = "0.0.0.0/0"
-		authorizeSecurityGroupRequest.Description = "This rule is created by BaaS"
-		ports := [6]string{"22/22", "7050/7054", "2181/2181", "2888/2888", "3888/3888", "9092/9093"}
-		for _, port := range ports {
-			authorizeSecurityGroupRequest.PortRange = port
-			client.AuthorizeSecurityGroup(authorizeSecurityGroupRequest)
-		}
-		return &commons.CreateSecurityGroupResponse{SecurityGroupId: securityGroupId}, nil
 	}
+
+	authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest()
+	authorizeSecurityGroupRequest.RegionId = request.RegionId
+	authorizeSecurityGroupRequest.SecurityGroupId = request.SecurityGroupId
+	authorizeSecurityGroupRequest.IpProtocol = "tcp"
+	authorizeSecurityGroupRequest.PortRange = request.PortRange
+	authorizeSecurityGroupRequest.NicType = "intranet"
+	authorizeSecurityGroupRequest.SourceCidrIp = "0.0.0.0/0"
+	authorizeSecurityGroupRequest.Policy = "accept"
+	authorizeSecurityGroupRequest.Priority = "1"
+	authorizeSecurityGroupRequest.Description = commons.AliCloudSecurityGroupRuleDescription
+	authorizeSecurityGroupRequest.ClientToken = utils.GetUUIDV4()
+	authorizeSecurityGroupResponse, err := client.AuthorizeSecurityGroup(authorizeSecurityGroupRequest)
+	if nil != err {
+		return nil, helpers.ParseError(err)
+	}
+	return &commons.AuthorizeSecurityGroupResponse{RequestId: authorizeSecurityGroupResponse.RequestId}, nil
 }
 
 func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse, error) {
@@ -138,11 +146,10 @@ func (provider *CloudProvider) RunInstances(request *commons.RunInstancesRequest
 	if err != nil {
 		return nil, err
 	}
-	if request.SecurityGroupId == commons.ValueEmpty || request.VSwitchId == commons.ValueEmpty {
-		return nil, errors.New(commons.AliCloudErrorMessageInvalidData)
-	}
+
 	runInstancesRequest := ecs.CreateRunInstancesRequest()
 	helpers.TransferValuesBetweenRequest(runInstancesRequest, request)
+	runInstancesRequest.ClientToken = utils.GetUUIDV4()
 	runInstancesResponse, err := client.RunInstances(runInstancesRequest)
 	time.Sleep(time.Duration(5) * time.Second)
 	if err == nil {
@@ -197,7 +204,7 @@ func (provider *CloudProvider) DescribeZones(regionId string) ([]*commons.Descri
 	if err == nil {
 		if len(describeZonesResponse.Zones.Zone) > 0 {
 			for _, v := range describeZonesResponse.Zones.Zone {
-				describeZonesSlice = append(describeZonesSlice, &commons.DescribeZonesResponse{v.ZoneId, v.LocalName})
+				describeZonesSlice = append(describeZonesSlice, &commons.DescribeZonesResponse{ZoneId: v.ZoneId, LocalName: v.LocalName})
 			}
 			return describeZonesSlice, nil
 		}
@@ -205,9 +212,50 @@ func (provider *CloudProvider) DescribeZones(regionId string) ([]*commons.Descri
 	return describeZonesSlice, helpers.ParseError(err)
 }
 
+//
+//func (provider *CloudProvider) DescribeVpc(vpcId string) ([]*commons.DescribeZonesResponse, error) {
+//	client, err := provider.GetClient()
+//	if err != nil {
+//		return describeZonesSlice, err
+//	}
+//	describeZonesRequest := vpc.CreateDescribeVpcAttributeRequest()
+//	describeZonesRequest.RegionId = regionId
+//	describeZonesResponse, err := client.DescribeVpcAttribute(describeZonesRequest)
+//	if err == nil {
+//		if len(describeZonesResponse.Zones.Zone) > 0 {
+//			for _, v := range describeZonesResponse.Zones.Zone {
+//				describeZonesSlice = append(describeZonesSlice, &commons.DescribeZonesResponse{ZoneId: v.ZoneId, LocalName: v.LocalName})
+//			}
+//			return describeZonesSlice, nil
+//		}
+//	}
+//	return describeZonesSlice, helpers.ParseError(err)
+//}
+//
+//func (provider *CloudProvider) WaitForVpc(vpcId string, status Status, timeout int) error {
+//	if timeout <= 0 {
+//		timeout = commons.DefaultTimeout
+//	}
+//
+//	for {
+//		vpc, err := provider.DescribeVpc(vpcId)
+//		if err != nil {
+//			return err
+//		}
+//		if vpc.Status == string(status) {
+//			break
+//		}
+//		timeout = timeout - DefaultIntervalShort
+//		if timeout <= 0 {
+//			return GetTimeErrorFromString(GetTimeoutMessage("VPC", string(status)))
+//		}
+//		time.Sleep(DefaultIntervalShort * time.Second)
+//	}
+//	return nil
+//}
+
 func (provider *CloudProvider) GetClient() (*ecs.Client, error) {
-	config := provider.Config
-	client, err := ecs.NewClientWithAccessKey(config.RegionId, config.AccessKeyId, config.AccessKeySecret)
+	client, err := ecs.NewClientWithAccessKey(provider.Client.RegionId, provider.Client.AccessKeyId, provider.Client.AccessKeySecret)
 	if err == nil {
 		return client, nil
 	} else {

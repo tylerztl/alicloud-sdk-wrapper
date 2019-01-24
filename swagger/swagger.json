@@ -15,10 +15,10 @@
     },
     "basePath": "/v1",
     "paths": {
-        "/cloud/regions": {
+        "/alicloud/regions": {
             "get": {
                 "tags": [
-                    "cloud"
+                    "alicloud"
                 ],
                 "description": "Query available regions",
                 "operationId": "CloudController.DescribeRegions",
@@ -32,10 +32,10 @@
                 }
             }
         },
-        "/cloud/runinstances": {
+        "/alicloud/runinstances": {
             "post": {
                 "tags": [
-                    "cloud"
+                    "alicloud"
                 ],
                 "description": "run instances",
                 "operationId": "CloudController.RunInstances",
@@ -60,10 +60,10 @@
                 }
             }
         },
-        "/cloud/securitygroup": {
+        "/alicloud/securitygroup": {
             "post": {
                 "tags": [
-                    "cloud"
+                    "alicloud"
                 ],
                 "description": "create SecurityGroup",
                 "operationId": "CloudController.CreateSecurityGroup",
@@ -88,10 +88,38 @@
                 }
             }
         },
-        "/cloud/vpc": {
+        "/alicloud/securitygroup/authorize": {
             "post": {
                 "tags": [
-                    "cloud"
+                    "alicloud"
+                ],
+                "description": "Add a security group entry direction rule",
+                "operationId": "CloudController.CreateAuthorizeSecurityGroup",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/commons.AuthorizeSecurityGroupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/alicloud/vpc": {
+            "post": {
+                "tags": [
+                    "alicloud"
                 ],
                 "description": "create VPC",
                 "operationId": "CloudController.CreateVPC",
@@ -116,10 +144,10 @@
                 }
             }
         },
-        "/cloud/vswitch": {
+        "/alicloud/vswitch": {
             "post": {
                 "tags": [
-                    "cloud"
+                    "alicloud"
                 ],
                 "description": "create VSwitch",
                 "operationId": "CloudController.CreateVSwitch",
@@ -144,10 +172,10 @@
                 }
             }
         },
-        "/cloud/zones": {
+        "/alicloud/zones": {
             "get": {
                 "tags": [
-                    "cloud"
+                    "alicloud"
                 ],
                 "description": "Query the available zones for the specified region",
                 "operationId": "CloudController.DescribeZones",
@@ -353,10 +381,28 @@
         }
     },
     "definitions": {
+        "commons.AuthorizeSecurityGroupRequest": {
+            "title": "AuthorizeSecurityGroupRequest",
+            "type": "object",
+            "properties": {
+                "PortRange": {
+                    "type": "string"
+                },
+                "RegionId": {
+                    "type": "string"
+                },
+                "SecurityGroupId": {
+                    "type": "string"
+                }
+            }
+        },
         "commons.CreateSecurityGroupRequest": {
             "title": "CreateSecurityGroupRequest",
             "type": "object",
             "properties": {
+                "RegionId": {
+                    "type": "string"
+                },
                 "SecurityGroupName": {
                     "type": "string"
                 },
@@ -370,6 +416,9 @@
             "type": "object",
             "properties": {
                 "CidrBlock": {
+                    "type": "string"
+                },
+                "RegionId": {
                     "type": "string"
                 },
                 "VSwitchName": {
@@ -414,13 +463,19 @@
                 "InstanceType": {
                     "type": "string"
                 },
+                "Password": {
+                    "type": "string"
+                },
+                "RegionId": {
+                    "type": "string"
+                },
                 "SecurityGroupId": {
                     "type": "string"
                 },
                 "VSwitchId": {
                     "type": "string"
                 },
-                "VpcId": {
+                "ZoneId": {
                     "type": "string"
                 }
             }

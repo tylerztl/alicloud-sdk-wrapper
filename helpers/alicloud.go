@@ -8,25 +8,20 @@ import (
 )
 
 func TransferValuesBetweenRequest(runInstancesRequest *ecs.RunInstancesRequest, request *commons.RunInstancesRequest) {
+	runInstancesRequest.RegionId = request.RegionId
+	runInstancesRequest.ZoneId = request.ZoneId
 	if request.ImageId == commons.ValueEmpty {
 		runInstancesRequest.ImageId = commons.AliCloudImageId
 	} else {
 		runInstancesRequest.ImageId = request.ImageId
 	}
-	runInstancesRequest.SystemDiskCategory = commons.AliCloudSystemDiskCategory
-	runInstancesRequest.SystemDiskSize = commons.AliCloudSystemDiskSize
-	runInstancesRequest.SecurityGroupId = request.SecurityGroupId
-	runInstancesRequest.InstanceName = commons.AliCloudInstanceName
-	runInstancesRequest.Description = commons.AliCloudInstanceDescription
 	if request.InstanceType == commons.ValueEmpty {
 		runInstancesRequest.InstanceType = commons.AliCloudInstanceType
 	} else {
 		runInstancesRequest.InstanceType = request.InstanceType
 	}
-	runInstancesRequest.InternetChargeType = commons.AliCloudInternetChargeType
-	runInstancesRequest.InternetMaxBandwidthOut = requests.NewInteger(commons.AliCloudInternetMaxBandwidthOut)
-	runInstancesRequest.HostName = commons.AliCloudInstanceHostName
-	runInstancesRequest.Password = commons.AliCloudInstancePassword
+	runInstancesRequest.SecurityGroupId = request.SecurityGroupId
+	runInstancesRequest.VSwitchId = request.VSwitchId
 	if request.InstanceChargeType == commons.ValueEmpty {
 		runInstancesRequest.InstanceChargeType = commons.AliCloudInstanceChargeTypePostPaid
 	} else {
@@ -36,12 +31,27 @@ func TransferValuesBetweenRequest(runInstancesRequest *ecs.RunInstancesRequest, 
 		runInstancesRequest.PeriodUnit = commons.AliCloudInstanceChargeTypePeriodUnit
 		runInstancesRequest.Period = requests.NewInteger(commons.AliCloudInstanceChargeTypePeriod)
 	}
+	runInstancesRequest.HostName = commons.AliCloudInstanceHostName
+	if request.Password == commons.ValueEmpty {
+		runInstancesRequest.Password = commons.AliCloudInstancePassword
+	} else {
+		runInstancesRequest.Password = request.Password
+	}
+
+	runInstancesRequest.InternetChargeType = commons.AliCloudInternetChargeType
+	runInstancesRequest.IoOptimized = commons.AliCloudIoOptimized
+
+	runInstancesRequest.SystemDiskCategory = commons.AliCloudSystemDiskCategory
+	runInstancesRequest.SystemDiskSize = commons.AliCloudSystemDiskSize
+
+	runInstancesRequest.InternetMaxBandwidthOut = requests.NewInteger(commons.AliCloudInternetMaxBandwidthOut)
+	runInstancesRequest.InstanceName = commons.AliCloudInstanceName
+	runInstancesRequest.Description = commons.AliCloudInstanceDescription
+
 	if request.Amount == commons.ValueEmpty {
 		runInstancesRequest.Amount = requests.NewInteger(commons.AliCloudInstanceAmount)
 	} else {
 		runInstancesRequest.Amount = requests.Integer(request.Amount)
 	}
-	runInstancesRequest.IoOptimized = commons.AliCloudIoOptimized
-	runInstancesRequest.VSwitchId = request.VSwitchId
 	runInstancesRequest.DryRun = requests.NewBoolean(commons.AliCloudDryRun)
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"zig-cloud/database"
 	_ "zig-cloud/routers"
+	_ "zig-cloud/services/cloudprovider/alicloud"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
