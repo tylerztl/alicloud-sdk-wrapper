@@ -58,6 +58,10 @@ type RunInstancesResponse struct {
 	Instances map[string]map[string]string
 }
 
+type DeleteInstanceResponse struct {
+	RequestId string
+}
+
 type DescribeZonesResponse struct {
 	ZoneId    string
 	LocalName string

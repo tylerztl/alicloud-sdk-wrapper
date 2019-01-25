@@ -12,8 +12,9 @@ type Provider interface {
 	CreateVpc(request *commons.CreateVpcRequest) (*commons.CreateVpcResponse, error)
 	CreateVSwitch(request *commons.CreateVSwitchRequest) (*commons.CreateVSwitchResponse, error)
 	CreateSecurityGroup(request *commons.CreateSecurityGroupRequest) (*commons.CreateSecurityGroupResponse, error)
-	CreateAuthorizeSecurityGroup(request *commons.AuthorizeSecurityGroupRequest) (*commons.AuthorizeSecurityGroupResponse, error)
+	AuthorizeSecurityGroup(request *commons.AuthorizeSecurityGroupRequest) (*commons.AuthorizeSecurityGroupResponse, error)
 	RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse, error)
+	DeleteInstance(instanceId string) (*commons.DeleteInstanceResponse, error)
 	DescribeRegions() (*ecs.DescribeRegionsResponse, error)
 	DescribeZones(regionId string) ([]*commons.DescribeZonesResponse, error)
 }

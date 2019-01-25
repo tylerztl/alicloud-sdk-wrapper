@@ -63,7 +63,7 @@ paths:
       tags:
       - alicloud
       description: Add a security group entry direction rule
-      operationId: CloudController.CreateAuthorizeSecurityGroup
+      operationId: CloudController.AuthorizeSecurityGroup
       parameters:
       - in: body
         name: body

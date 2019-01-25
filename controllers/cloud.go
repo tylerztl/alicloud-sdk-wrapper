@@ -83,20 +83,20 @@ func (cloud *CloudController) CreateSecurityGroup() {
 	}
 }
 
-// @Title CreateAuthorizeSecurityGroup
+// @Title AuthorizeSecurityGroup
 // @Description Add a security group entry direction rule
 // @Param	body	body 	commons.AuthorizeSecurityGroupRequest	true 	"body content"
 // @Success 200 {}
 // @Failure 403
 // @router /securitygroup/authorize [post]
-func (cloud *CloudController) CreateAuthorizeSecurityGroup() {
+func (cloud *CloudController) AuthorizeSecurityGroup() {
 	authorizeSecurityGroupRequest := new(commons.AuthorizeSecurityGroupRequest)
 	err := json.Unmarshal(cloud.Ctx.Input.RequestBody, authorizeSecurityGroupRequest)
 	if nil != err {
 		cloud.CustomAbort(403, err.Error())
 	}
 	cloudProvider := services.GetProviderByType(cloud.Provider)
-	authorizeSecurityGroupResponse, err := cloudProvider.CreateAuthorizeSecurityGroup(authorizeSecurityGroupRequest)
+	authorizeSecurityGroupResponse, err := cloudProvider.AuthorizeSecurityGroup(authorizeSecurityGroupRequest)
 	if err == nil {
 		cloud.Data["json"] = authorizeSecurityGroupResponse
 		cloud.ServeJSON()
