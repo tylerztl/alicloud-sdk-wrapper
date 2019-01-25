@@ -3,9 +3,53 @@ package commons
 const (
 	SeparatorHype string = "-"
 	ValueEmpty    string = ""
-	// timeout for common product, ecs e.g.
+)
+
+const (
 	DefaultTimeout       = 120
 	DefaultIntervalShort = 5
+)
+
+type Status string
+
+const (
+	Pending     = Status("Pending")
+	Creating    = Status("Creating")
+	Running     = Status("Running")
+	Available   = Status("Available")
+	Unavailable = Status("Unavailable")
+	Modifying   = Status("Modifying")
+	Deleting    = Status("Deleting")
+	Starting    = Status("Starting")
+	Stopping    = Status("Stopping")
+	Stopped     = Status("Stopped")
+	Normal      = Status("Normal")
+	Changing    = Status("Changing")
+	Online      = Status("online")
+	Configuring = Status("configuring")
+
+	Associating   = Status("Associating")
+	Unassociating = Status("Unassociating")
+	InUse         = Status("InUse")
+	DiskInUse     = Status("In_use")
+
+	Active   = Status("Active")
+	Inactive = Status("Inactive")
+	Idle     = Status("Idle")
+
+	SoldOut = Status("SoldOut")
+
+	InService      = Status("InService")
+	Removing       = Status("Removing")
+	DisabledStatus = Status("Disabled")
+
+	Init            = Status("Init")
+	Provisioning    = Status("Provisioning")
+	Updating        = Status("Updating")
+	FinancialLocked = Status("FinancialLocked")
+
+	PUBLISHED   = Status("Published")
+	NOPUBLISHED = Status("NonPublished")
 )
 
 const (

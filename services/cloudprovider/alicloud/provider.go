@@ -2,6 +2,7 @@ package alicloud
 
 import (
 	"fmt"
+	"time"
 	"zig-cloud/commons"
 	"zig-cloud/helpers"
 
@@ -26,7 +27,52 @@ func (c *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*commons.C
 	}
 	vpcResponse, _ := raw.(*vpc.CreateVpcResponse)
 	beego.Debug("CreateVpc successful vpcId =", vpcResponse.VpcId)
+
+	err = c.WaitForVpc(vpcRequest.RegionId, vpcResponse.VpcId, commons.Available, 60)
+	if err != nil {
+		beego.Error("Timeout when WaitForVpc Available,", err)
+		return nil, err
+	}
 	return &commons.CreateVpcResponse{VpcId: vpcResponse.VpcId}, nil
+}
+
+func (c *CloudProvider) DescribeVpc(regionId, vpcId string) (*vpc.DescribeVpcAttributeResponse, error) {
+	vpcAttributeRequest := vpc.CreateDescribeVpcAttributeRequest()
+	vpcAttributeRequest.RegionId = regionId
+	vpcAttributeRequest.VpcId = vpcId
+
+	raw, err := c.Client.WithVpcClient(func(vpcClient *vpc.Client) (interface{}, error) {
+		return vpcClient.DescribeVpcAttribute(vpcAttributeRequest)
+	})
+	if nil != err {
+		beego.Error("DescribeVpcAttribute failed:", err)
+		return nil, helpers.ParseError(err)
+	}
+	vpcAttributeResponse, _ := raw.(*vpc.DescribeVpcAttributeResponse)
+	beego.Debug("DescribeVpcAttribute successful:", vpcAttributeResponse)
+	return vpcAttributeResponse, nil
+}
+
+func (c *CloudProvider) WaitForVpc(regionId, vpcId string, status commons.Status, timeout int) error {
+	if timeout <= 0 {
+		timeout = commons.DefaultTimeout
+	}
+
+	for {
+		vpc, err := c.DescribeVpc(regionId, vpcId)
+		if err != nil {
+			return err
+		}
+		if vpc.Status == string(status) {
+			break
+		}
+		timeout = timeout - commons.DefaultIntervalShort
+		if timeout <= 0 {
+			return fmt.Errorf(helpers.GetTimeoutMessage(vpcId, string(status)))
+		}
+		time.Sleep(commons.DefaultIntervalShort * time.Second)
+	}
+	return nil
 }
 
 func (c *CloudProvider) CreateVSwitch(request *commons.CreateVSwitchRequest) (*commons.CreateVSwitchResponse, error) {
@@ -156,45 +202,3 @@ func (c *CloudProvider) DescribeZones(regionId string) ([]*commons.DescribeZones
 	}
 	return describeZonesSlice, nil
 }
-
-//
-//func (provider *CloudProvider) DescribeVpc(vpcId string) ([]*commons.DescribeZonesResponse, error) {
-//	client, err := provider.GetClient()
-//	if err != nil {
-//		return describeZonesSlice, err
-//	}
-//	describeZonesRequest := vpc.CreateDescribeVpcAttributeRequest()
-//	describeZonesRequest.RegionId = regionId
-//	describeZonesResponse, err := client.DescribeVpcAttribute(describeZonesRequest)
-//	if err == nil {
-//		if len(describeZonesResponse.Zones.Zone) > 0 {
-//			for _, v := range describeZonesResponse.Zones.Zone {
-//				describeZonesSlice = append(describeZonesSlice, &commons.DescribeZonesResponse{ZoneId: v.ZoneId, LocalName: v.LocalName})
-//			}
-//			return describeZonesSlice, nil
-//		}
-//	}
-//	return describeZonesSlice, helpers.ParseError(err)
-//}
-//
-//func (provider *CloudProvider) WaitForVpc(vpcId string, status Status, timeout int) error {
-//	if timeout <= 0 {
-//		timeout = commons.DefaultTimeout
-//	}
-//
-//	for {
-//		vpc, err := provider.DescribeVpc(vpcId)
-//		if err != nil {
-//			return err
-//		}
-//		if vpc.Status == string(status) {
-//			break
-//		}
-//		timeout = timeout - DefaultIntervalShort
-//		if timeout <= 0 {
-//			return GetTimeErrorFromString(GetTimeoutMessage("VPC", string(status)))
-//		}
-//		time.Sleep(DefaultIntervalShort * time.Second)
-//	}
-//	return nil
-//}

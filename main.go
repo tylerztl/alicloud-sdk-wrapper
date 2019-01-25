@@ -20,7 +20,11 @@ func init() {
 func initLogger() {
 	config := make(map[string]interface{})
 	config["filename"] = beego.AppConfig.String("logPath")
-	config["level"] = beego.LevelDebug
+	logLevel, err := beego.AppConfig.Int("logLevel")
+	if nil != err {
+		logLevel = beego.LevelDebug
+	}
+	config["level"] = logLevel
 
 	configStr, err := json.Marshal(config)
 	if nil != err {

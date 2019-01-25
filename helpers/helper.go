@@ -33,3 +33,7 @@ func GenerateRandomString() string {
 	str := b.String()
 	return str
 }
+
+func GetTimeoutMessage(product, status string) string {
+	return fmt.Sprintf("Waitting for %s %s is timeout.", product, status)
+}
