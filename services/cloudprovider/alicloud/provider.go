@@ -36,10 +36,10 @@ func (c *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*commons.C
 	return &commons.CreateVpcResponse{VpcId: vpcResponse.VpcId}, nil
 }
 
-func (c *CloudProvider) DescribeVpc(regionId, vpcId string) (*vpc.DescribeVpcAttributeResponse, error) {
+func (c *CloudProvider) DescribeVpc(request *commons.DescribeVpcAttributeRequest) (*commons.DescribeVpcAttributeResponse, error) {
 	vpcAttributeRequest := vpc.CreateDescribeVpcAttributeRequest()
-	vpcAttributeRequest.RegionId = regionId
-	vpcAttributeRequest.VpcId = vpcId
+	vpcAttributeRequest.RegionId = request.RegionId
+	vpcAttributeRequest.VpcId = request.VpcId
 
 	raw, err := c.Client.WithVpcClient(func(vpcClient *vpc.Client) (interface{}, error) {
 		return vpcClient.DescribeVpcAttribute(vpcAttributeRequest)
@@ -50,7 +50,15 @@ func (c *CloudProvider) DescribeVpc(regionId, vpcId string) (*vpc.DescribeVpcAtt
 	}
 	vpcAttributeResponse, _ := raw.(*vpc.DescribeVpcAttributeResponse)
 	beego.Debug("DescribeVpcAttribute successful:", vpcAttributeResponse)
-	return vpcAttributeResponse, nil
+	return &commons.DescribeVpcAttributeResponse{
+		VpcId:        vpcAttributeResponse.VpcId,
+		RegionId:     vpcAttributeResponse.RegionId,
+		Status:       vpcAttributeResponse.Status,
+		VpcName:      vpcAttributeResponse.VpcName,
+		CreationTime: vpcAttributeResponse.CreationTime,
+		CidrBlock:    vpcAttributeResponse.CidrBlock,
+		VRouterId:    vpcAttributeResponse.VRouterId,
+	}, nil
 }
 
 func (c *CloudProvider) WaitForVpc(regionId, vpcId string, status commons.Status, timeout int) error {
@@ -59,7 +67,7 @@ func (c *CloudProvider) WaitForVpc(regionId, vpcId string, status commons.Status
 	}
 
 	for {
-		vpc, err := c.DescribeVpc(regionId, vpcId)
+		vpc, err := c.DescribeVpc(&commons.DescribeVpcAttributeRequest{RegionId: regionId, VpcId: vpcId})
 		if err != nil {
 			return err
 		}
@@ -87,7 +95,61 @@ func (c *CloudProvider) CreateVSwitch(request *commons.CreateVSwitchRequest) (*c
 	}
 	vswitchResponse, _ := raw.(*vpc.CreateVSwitchResponse)
 	beego.Debug("CreateVSwitch successful VSwitchId =", vswitchResponse.VSwitchId)
+
+	err = c.WaitForVSwitch(vswitchRequest.RegionId, vswitchResponse.VSwitchId, commons.Available, 60)
+	if err != nil {
+		beego.Error("Timeout when WaitForVSwitch Available,", err)
+		return nil, err
+	}
 	return &commons.CreateVSwitchResponse{VSwitchId: vswitchResponse.VSwitchId}, nil
+}
+
+func (c *CloudProvider) DescribeVswitch(request *commons.DescribeVSwitchAttributesRequest) (*commons.DescribeVSwitchAttributesResponse, error) {
+	vswitchAttributesRequest := vpc.CreateDescribeVSwitchAttributesRequest()
+	vswitchAttributesRequest.RegionId = request.RegionId
+	vswitchAttributesRequest.VSwitchId = request.VSwitchId
+
+	raw, err := c.Client.WithVpcClient(func(vpcClient *vpc.Client) (interface{}, error) {
+		return vpcClient.DescribeVSwitchAttributes(vswitchAttributesRequest)
+	})
+	if nil != err {
+		beego.Error("DescribeVSwitchAttributes failed:", err)
+		return nil, helpers.ParseError(err)
+	}
+	vswitchAttributesResponse, _ := raw.(*vpc.DescribeVSwitchAttributesResponse)
+	beego.Debug("DescribeVSwitchAttributes successful:", vswitchAttributesResponse)
+	return &commons.DescribeVSwitchAttributesResponse{
+		VSwitchId:               vswitchAttributesResponse.VSwitchId,
+		VpcId:                   vswitchAttributesResponse.VpcId,
+		Status:                  vswitchAttributesResponse.Status,
+		CidrBlock:               vswitchAttributesResponse.CidrBlock,
+		ZoneId:                  vswitchAttributesResponse.ZoneId,
+		AvailableIpAddressCount: vswitchAttributesResponse.AvailableIpAddressCount,
+		VSwitchName:             vswitchAttributesResponse.VSwitchName,
+		CreationTime:            vswitchAttributesResponse.CreationTime,
+	}, nil
+}
+
+func (c *CloudProvider) WaitForVSwitch(regionId, vswitchId string, status commons.Status, timeout int) error {
+	if timeout <= 0 {
+		timeout = commons.DefaultTimeout
+	}
+
+	for {
+		vswitch, err := c.DescribeVswitch(&commons.DescribeVSwitchAttributesRequest{RegionId: regionId, VSwitchId: vswitchId})
+		if err != nil {
+			return err
+		}
+		if vswitch.Status == string(status) {
+			break
+		}
+		timeout = timeout - commons.DefaultIntervalShort
+		if timeout <= 0 {
+			return fmt.Errorf(helpers.GetTimeoutMessage(vswitchId, string(status)))
+		}
+		time.Sleep(commons.DefaultIntervalShort * time.Second)
+	}
+	return nil
 }
 
 func (c *CloudProvider) CreateSecurityGroup(request *commons.CreateSecurityGroupRequest) (*commons.CreateSecurityGroupResponse, error) {

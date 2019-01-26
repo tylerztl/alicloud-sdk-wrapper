@@ -10,12 +10,43 @@ type CreateVpcResponse struct {
 	VpcId string
 }
 
+type DescribeVpcAttributeRequest struct {
+	RegionId string
+	VpcId    string
+}
+
+type DescribeVpcAttributeResponse struct {
+	VpcId        string
+	RegionId     string
+	Status       string
+	VpcName      string
+	CreationTime string
+	CidrBlock    string
+	VRouterId    string
+}
+
 type CreateVSwitchRequest struct {
 	VSwitchName string
 	VpcId       string
 	ZoneId      string
 	RegionId    string
 	CidrBlock   string
+}
+
+type DescribeVSwitchAttributesRequest struct {
+	RegionId  string
+	VSwitchId string
+}
+
+type DescribeVSwitchAttributesResponse struct {
+	VSwitchId               string
+	VpcId                   string
+	Status                  string
+	CidrBlock               string
+	ZoneId                  string
+	AvailableIpAddressCount int
+	VSwitchName             string
+	CreationTime            string
 }
 
 type CreateVSwitchResponse struct {
