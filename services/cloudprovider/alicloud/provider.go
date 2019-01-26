@@ -186,30 +186,102 @@ func (c *CloudProvider) AuthorizeSecurityGroup(request *commons.AuthorizeSecurit
 }
 
 func (c *CloudProvider) RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse, error) {
-	//runInstancesRequest := BuildInstanceRequest(request)
-	//runInstancesResponse, err := client.RunInstances(runInstancesRequest)
-	//time.Sleep(time.Duration(5) * time.Second)
-	//if err == nil {
-	//	instanceIdSet := runInstancesResponse.InstanceIdSets.InstanceIdSet
-	//	instances := make(map[string]map[string]string)
-	//	for _, instanceId := range instanceIdSet {
-	//		mapData := make(map[string]string)
-	//		instanceRequest := ecs.CreateDescribeInstanceAttributeRequest()
-	//		instanceRequest.InstanceId = instanceId
-	//		instanceResponse, err := client.DescribeInstanceAttribute(instanceRequest)
-	//		if err == nil {
-	//			if len(instanceResponse.PublicIpAddress.IpAddress) > 0 {
-	//				mapData["public-ip"] = instanceResponse.PublicIpAddress.IpAddress[0]
-	//			}
-	//			mapData["instance-name"] = instanceResponse.InstanceName
-	//		}
-	//		instances[instanceId] = mapData
-	//	}
-	//	return &commons.RunInstancesResponse{Instances: instances}, nil
-	//} else {
-	//	return nil, err
-	//}
-	return nil, nil
+	runInstancesRequest := BuildInstanceRequest(request)
+
+	raw, err := c.Client.WithEcsClient(func(ecsClient *ecs.Client) (interface{}, error) {
+		return ecsClient.RunInstances(runInstancesRequest)
+	})
+	if nil != err {
+		beego.Error("RunInstances failed:", err)
+		return nil, helpers.ParseError(err)
+	}
+	runInstancesResponse, _ := raw.(*ecs.RunInstancesResponse)
+	beego.Debug("RunInstances successful:", runInstancesResponse)
+
+	instances, err := c.WaitForEcsInstance(runInstancesRequest.RegionId, runInstancesResponse.InstanceIdSets.InstanceIdSet, commons.Running, commons.DefaultTimeoutMedium)
+	if err != nil {
+		beego.Error("Timeout when WaitForEcsInstance Running,", err)
+		return nil, err
+	}
+
+	return &commons.RunInstancesResponse{Instances: instances.Instances}, nil
+}
+
+func (c *CloudProvider) DescribeInstances(request *commons.DescribeInstancesRequest) (*commons.DescribeInstancesResponse, error) {
+	describeInstancesRequest := ecs.CreateDescribeInstancesRequest()
+	describeInstancesRequest.RegionId = request.RegionId
+	describeInstancesRequest.InstanceIds = request.InstanceIds
+
+	raw, err := c.Client.WithEcsClient(func(ecsClient *ecs.Client) (interface{}, error) {
+		return ecsClient.DescribeInstances(describeInstancesRequest)
+	})
+	if nil != err {
+		beego.Error("DescribeInstances failed:", err)
+		return nil, helpers.ParseError(err)
+	}
+	describeInstancesResponse, _ := raw.(*ecs.DescribeInstancesResponse)
+	beego.Debug("DescribeInstances successful:", describeInstancesResponse)
+	response := &commons.DescribeInstancesResponse{Instances: []commons.Instance{}}
+	for _, v := range describeInstancesResponse.Instances.Instance {
+		response.Instances = append(response.Instances, commons.Instance{
+			InstanceName:     v.InstanceName,
+			HostName:         v.HostName,
+			Status:           v.Status,
+			InstanceId:       v.InstanceId,
+			CreationTime:     v.CreationTime,
+			SecurityGroupIds: v.SecurityGroupIds.SecurityGroupId,
+			InnerIpAddress:   v.InnerIpAddress.IpAddress,
+			PublicIpAddress:  v.PublicIpAddress.IpAddress,
+		})
+	}
+	return response, nil
+}
+
+func (c *CloudProvider) WaitForEcsInstance(regionId string, instanceIdSet []string, status commons.Status, timeout int) (*commons.DescribeInstancesResponse, error) {
+	if timeout <= 0 {
+		timeout = commons.DefaultTimeout
+	}
+
+	for {
+		time.Sleep(commons.DefaultIntervalShort * time.Second)
+		instances, err := c.DescribeInstances(&commons.DescribeInstancesRequest{
+			RegionId:    regionId,
+			InstanceIds: helpers.ConvertListToJsonString(instanceIdSet),
+		})
+		if err != nil {
+			return nil, err
+		}
+		statusValid := true
+		for _, instance := range instances.Instances {
+			if instance.Status != string(status) {
+				statusValid = false
+				break
+			}
+		}
+		if statusValid {
+			return instances, nil
+		}
+		timeout = timeout - commons.DefaultIntervalShort
+		if timeout <= 0 {
+			return nil, fmt.Errorf(helpers.GetTimeoutMessage("ECS Instance", string(status)))
+		}
+	}
+}
+
+func (c *CloudProvider) StopInstance(instanceId string) (*commons.StopInstanceResponse, error) {
+	stopInstanceRequest := ecs.CreateStopInstanceRequest()
+	stopInstanceRequest.InstanceId = instanceId
+
+	raw, err := c.Client.WithEcsClient(func(ecsClient *ecs.Client) (interface{}, error) {
+		return ecsClient.StopInstance(stopInstanceRequest)
+	})
+	if nil != err {
+		beego.Error("StopInstance failed:", err)
+		return nil, helpers.ParseError(err)
+	}
+	stopInstanceResponse, _ := raw.(*ecs.StopInstanceResponse)
+	beego.Debug("StopInstance successful RequestId =", stopInstanceResponse.RequestId)
+	return &commons.StopInstanceResponse{RequestId: stopInstanceResponse.RequestId}, nil
 }
 
 func (c *CloudProvider) DeleteInstance(instanceId string) (*commons.DeleteInstanceResponse, error) {

@@ -67,7 +67,11 @@ func BuildVSwitchRequest(request *commons.CreateVSwitchRequest) *vpc.CreateVSwit
 func BuildSecurityGroupRequest(request *commons.CreateSecurityGroupRequest) *ecs.CreateSecurityGroupRequest {
 	securityGroupRequest := ecs.CreateCreateSecurityGroupRequest()
 
-	securityGroupRequest.RegionId = request.RegionId
+	if request.RegionId == commons.ValueEmpty {
+		securityGroupRequest.RegionId = commons.AliCloudRegionId
+	} else {
+		securityGroupRequest.RegionId = request.RegionId
+	}
 	securityGroupRequest.VpcId = request.VpcId
 	if request.SecurityGroupName == commons.ValueEmpty {
 		securityGroupRequest.SecurityGroupName = helpers.GenerateSecurityGroupName()
@@ -83,14 +87,22 @@ func BuildSecurityGroupRequest(request *commons.CreateSecurityGroupRequest) *ecs
 func BuildAuthorizeSecurityGroupRequest(request *commons.AuthorizeSecurityGroupRequest) *ecs.AuthorizeSecurityGroupRequest {
 	authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest()
 
-	authorizeSecurityGroupRequest.RegionId = request.RegionId
+	if request.RegionId == commons.ValueEmpty {
+		authorizeSecurityGroupRequest.RegionId = commons.AliCloudRegionId
+	} else {
+		authorizeSecurityGroupRequest.RegionId = request.RegionId
+	}
 	authorizeSecurityGroupRequest.SecurityGroupId = request.SecurityGroupId
-	authorizeSecurityGroupRequest.IpProtocol = "tcp"
+	if request.IpProtocol == commons.ValueEmpty {
+		authorizeSecurityGroupRequest.IpProtocol = commons.AliCloudSecurityGroupRuleIpProtocol
+	} else {
+		authorizeSecurityGroupRequest.IpProtocol = request.IpProtocol
+	}
 	authorizeSecurityGroupRequest.PortRange = request.PortRange
-	authorizeSecurityGroupRequest.NicType = "intranet"
-	authorizeSecurityGroupRequest.SourceCidrIp = "0.0.0.0/0"
-	authorizeSecurityGroupRequest.Policy = "accept"
-	authorizeSecurityGroupRequest.Priority = "1"
+	authorizeSecurityGroupRequest.NicType = commons.AliCloudSecurityGroupRuleNicType
+	authorizeSecurityGroupRequest.SourceCidrIp = commons.AliCloudSecurityGroupRuleSourceCidrIp
+	authorizeSecurityGroupRequest.Policy = commons.AliCloudSecurityGroupRulePolicy
+	authorizeSecurityGroupRequest.Priority = commons.AliCloudSecurityGroupRulePriority
 	authorizeSecurityGroupRequest.Description = commons.AliCloudSecurityGroupRuleDescription
 	authorizeSecurityGroupRequest.ClientToken = utils.GetUUIDV4()
 
@@ -123,7 +135,11 @@ func BuildInstanceRequest(request *commons.RunInstancesRequest) *ecs.RunInstance
 		runInstancesRequest.PeriodUnit = commons.AliCloudInstanceChargeTypePeriodUnit
 		runInstancesRequest.Period = requests.NewInteger(commons.AliCloudInstanceChargeTypePeriod)
 	}
-	runInstancesRequest.HostName = commons.AliCloudInstanceHostName
+	if request.HostName == commons.ValueEmpty {
+		runInstancesRequest.HostName = commons.AliCloudInstanceHostName
+	} else {
+		runInstancesRequest.HostName = request.HostName
+	}
 	if request.Password == commons.ValueEmpty {
 		runInstancesRequest.Password = commons.AliCloudInstancePassword
 	} else {
@@ -140,10 +156,10 @@ func BuildInstanceRequest(request *commons.RunInstancesRequest) *ecs.RunInstance
 	runInstancesRequest.InstanceName = commons.AliCloudInstanceName
 	runInstancesRequest.Description = commons.AliCloudInstanceDescription
 
-	if request.Amount == commons.ValueEmpty {
+	if request.Amount <= 0 {
 		runInstancesRequest.Amount = requests.NewInteger(commons.AliCloudInstanceAmount)
 	} else {
-		runInstancesRequest.Amount = requests.Integer(request.Amount)
+		runInstancesRequest.Amount = requests.NewInteger(request.Amount)
 	}
 	runInstancesRequest.DryRun = requests.NewBoolean(commons.AliCloudDryRun)
 	runInstancesRequest.ClientToken = utils.GetUUIDV4()

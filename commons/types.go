@@ -66,6 +66,7 @@ type CreateSecurityGroupResponse struct {
 type AuthorizeSecurityGroupRequest struct {
 	RegionId        string
 	SecurityGroupId string
+	IpProtocol      string
 	PortRange       string
 }
 
@@ -81,12 +82,39 @@ type RunInstancesRequest struct {
 	SecurityGroupId    string
 	VSwitchId          string
 	InstanceChargeType string
-	Amount             string
+	PeriodUnit         string
+	Period             string
+	Amount             int
+	HostName           string
 	Password           string
 }
 
+type Instance struct {
+	InstanceName     string
+	HostName         string
+	Status           string
+	InstanceId       string
+	CreationTime     string
+	SecurityGroupIds []string
+	InnerIpAddress   []string
+	PublicIpAddress  []string
+}
+
 type RunInstancesResponse struct {
-	Instances map[string]map[string]string
+	Instances []Instance
+}
+
+type DescribeInstancesRequest struct {
+	RegionId    string
+	InstanceIds string
+}
+
+type DescribeInstancesResponse struct {
+	Instances []Instance
+}
+
+type StopInstanceResponse struct {
+	RequestId string
 }
 
 type DeleteInstanceResponse struct {

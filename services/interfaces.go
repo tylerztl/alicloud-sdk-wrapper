@@ -14,7 +14,9 @@ type Provider interface {
 	CreateSecurityGroup(request *commons.CreateSecurityGroupRequest) (*commons.CreateSecurityGroupResponse, error)
 	AuthorizeSecurityGroup(request *commons.AuthorizeSecurityGroupRequest) (*commons.AuthorizeSecurityGroupResponse, error)
 	RunInstances(request *commons.RunInstancesRequest) (*commons.RunInstancesResponse, error)
+	StopInstance(instanceId string) (*commons.StopInstanceResponse, error)
 	DeleteInstance(instanceId string) (*commons.DeleteInstanceResponse, error)
+	DescribeInstances(request *commons.DescribeInstancesRequest) (*commons.DescribeInstancesResponse, error)
 	DescribeRegions() (*ecs.DescribeRegionsResponse, error)
 	DescribeZones(regionId string) ([]*commons.DescribeZonesResponse, error)
 }

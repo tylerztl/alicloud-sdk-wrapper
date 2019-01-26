@@ -16,7 +16,7 @@ type CloudController struct {
 // @Title CreateVPC
 // @Description create VPC
 // @Param	body	body 	commons.CreateVpcRequest	true 	"body content"
-// @Success 200 {}
+// @Success 200 {object} commons.CreateVpcResponse
 // @Failure 403
 // @router /vpc [post]
 func (cloud *CloudController) CreateVPC() {
@@ -40,7 +40,7 @@ func (cloud *CloudController) CreateVPC() {
 // @Title CreateVSwitch
 // @Description create VSwitch
 // @Param	body	body 	commons.CreateVSwitchRequest	true 	"body content"
-// @Success 200 {}
+// @Success 200 {object} commons.CreateVSwitchResponse
 // @Failure 403
 // @router /vswitch [post]
 func (cloud *CloudController) CreateVSwitch() {
@@ -64,7 +64,7 @@ func (cloud *CloudController) CreateVSwitch() {
 // @Title CreateSecurityGroup
 // @Description create SecurityGroup
 // @Param	body	body 	commons.CreateSecurityGroupRequest	true 	"body content"
-// @Success 200 {}
+// @Success 200 {object} commons.CreateSecurityGroupResponse
 // @Failure 403
 // @router /securitygroup [post]
 func (cloud *CloudController) CreateSecurityGroup() {
@@ -86,9 +86,9 @@ func (cloud *CloudController) CreateSecurityGroup() {
 // @Title AuthorizeSecurityGroup
 // @Description Add a security group entry direction rule
 // @Param	body	body 	commons.AuthorizeSecurityGroupRequest	true 	"body content"
-// @Success 200 {}
+// @Success 200 {object} commons.AuthorizeSecurityGroupResponse
 // @Failure 403
-// @router /securitygroup/authorize [post]
+// @router /securitygroup/ingress-rule [post]
 func (cloud *CloudController) AuthorizeSecurityGroup() {
 	authorizeSecurityGroupRequest := new(commons.AuthorizeSecurityGroupRequest)
 	err := json.Unmarshal(cloud.Ctx.Input.RequestBody, authorizeSecurityGroupRequest)
@@ -108,9 +108,9 @@ func (cloud *CloudController) AuthorizeSecurityGroup() {
 // @Title RunInstances
 // @Description run instances
 // @Param	body	body 	commons.RunInstancesRequest	true 	"body content"
-// @Success 200 {}
+// @Success 200 {object} commons.RunInstancesResponse
 // @Failure 403
-// @router /runinstances [post]
+// @router /instances [post]
 func (cloud *CloudController) RunInstances() {
 	runInstancesRequest := new(commons.RunInstancesRequest)
 	err := json.Unmarshal(cloud.Ctx.Input.RequestBody, runInstancesRequest)
@@ -121,6 +121,65 @@ func (cloud *CloudController) RunInstances() {
 	runInstancesResponse, err := cloudProvider.RunInstances(runInstancesRequest)
 	if err == nil {
 		cloud.Data["json"] = runInstancesResponse.Instances
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403, err.Error())
+	}
+}
+
+// @Title DescribeInstances
+// @Description Query for details of one or more instances
+// @Param	regionId		query 	string	true		"The regionId for instances"
+// @Param	instanceIds		query 	string	true		"The instanceIds for query"
+// @Success 200 {object} commons.DescribeInstancesResponse
+// @Failure 403
+// @router /instances [get]
+func (cloud *CloudController) DescribeInstances() {
+	regionId := cloud.GetString("regionId")
+	instanceIds := cloud.GetString("instanceIds")
+	cloudProvider := services.GetProviderByType(cloud.Provider)
+	describeRegionsResponse, err := cloudProvider.DescribeInstances(&commons.DescribeInstancesRequest{
+		RegionId:    regionId,
+		InstanceIds: instanceIds,
+	})
+	if err == nil {
+		cloud.Data["json"] = describeRegionsResponse
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403, err.Error())
+	}
+}
+
+// @Title StopInstance
+// @Description Stop an running instance
+// @Param	instanceId		path 	string	true		"The instanceId for stop"
+// @Success 200 {object} commons.StopInstanceResponse
+// @Failure 403
+// @router /instance/stop/:instanceId [get]
+func (cloud *CloudController) StopInstance() {
+	instanceId := cloud.GetString(":instanceId")
+	cloudProvider := services.GetProviderByType(cloud.Provider)
+	stopInstanceResponse, err := cloudProvider.StopInstance(instanceId)
+	if err == nil {
+		cloud.Data["json"] = stopInstanceResponse
+		cloud.ServeJSON()
+	} else {
+		cloud.CustomAbort(403, err.Error())
+	}
+}
+
+// @Title DeleteInstance
+// @Description Release a PostPaid instance or an expiring PrePaid instance
+// @Param	instanceId		path 	string	true		"The instanceId for delete"
+// @Success 200 {object} commons.DeleteInstanceResponse
+// @Failure 403
+// @router /instance/delete/:instanceId [get]
+func (cloud *CloudController) DeleteInstance() {
+	instanceId := cloud.GetString(":instanceId")
+	cloudProvider := services.GetProviderByType(cloud.Provider)
+	deleteInstanceResponse, err := cloudProvider.DeleteInstance(instanceId)
+	if err == nil {
+		cloud.Data["json"] = deleteInstanceResponse
 		cloud.ServeJSON()
 	} else {
 		cloud.CustomAbort(403, err.Error())
@@ -146,11 +205,11 @@ func (cloud *CloudController) DescribeRegions() {
 // @Title DescribeZones
 // @Description Query the available zones for the specified region
 // @Param	regionId		query 	string	true		"The regionId for zones"
-// @Success 200 {}
+// @Success 200 {object} []commons.DescribeZonesResponse
 // @Failure 403
 // @router /zones [get]
 func (cloud *CloudController) DescribeZones() {
-	regionId := cloud.Ctx.Input.Query("regionId")
+	regionId := cloud.GetString("regionId")
 	cloudProvider := services.GetProviderByType(cloud.Provider)
 	describeZonesResponse, err := cloudProvider.DescribeZones(regionId)
 	if err == nil {

@@ -11,18 +11,68 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 basePath: /v1
 paths:
-  /alicloud/regions:
+  /alicloud/instance/delete/{instanceId}:
     get:
       tags:
       - alicloud
-      description: Query available regions
-      operationId: CloudController.DescribeRegions
+      description: Release a PostPaid instance or an expiring PrePaid instance
+      operationId: CloudController.DeleteInstance
+      parameters:
+      - in: path
+        name: instanceId
+        description: The instanceId for delete
+        required: true
+        type: string
       responses:
         "200":
-          description: '{}'
+          description: ""
+          schema:
+            $ref: '#/definitions/commons.DeleteInstanceResponse'
         "403":
           description: ""
-  /alicloud/runinstances:
+  /alicloud/instance/stop/{instanceId}:
+    get:
+      tags:
+      - alicloud
+      description: Stop an running instance
+      operationId: CloudController.StopInstance
+      parameters:
+      - in: path
+        name: instanceId
+        description: The instanceId for stop
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/commons.StopInstanceResponse'
+        "403":
+          description: ""
+  /alicloud/instances:
+    get:
+      tags:
+      - alicloud
+      description: Query for details of one or more instances
+      operationId: CloudController.DescribeInstances
+      parameters:
+      - in: query
+        name: regionId
+        description: The regionId for instances
+        required: true
+        type: string
+      - in: query
+        name: instanceIds
+        description: The instanceIds for query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/commons.DescribeInstancesResponse'
+        "403":
+          description: ""
     post:
       tags:
       - alicloud
@@ -35,6 +85,19 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/commons.RunInstancesRequest'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/commons.RunInstancesResponse'
+        "403":
+          description: ""
+  /alicloud/regions:
+    get:
+      tags:
+      - alicloud
+      description: Query available regions
+      operationId: CloudController.DescribeRegions
       responses:
         "200":
           description: '{}'
@@ -55,10 +118,12 @@ paths:
           $ref: '#/definitions/commons.CreateSecurityGroupRequest'
       responses:
         "200":
-          description: '{}'
+          description: ""
+          schema:
+            $ref: '#/definitions/commons.CreateSecurityGroupResponse'
         "403":
           description: ""
-  /alicloud/securitygroup/authorize:
+  /alicloud/securitygroup/ingress-rule:
     post:
       tags:
       - alicloud
@@ -73,7 +138,9 @@ paths:
           $ref: '#/definitions/commons.AuthorizeSecurityGroupRequest'
       responses:
         "200":
-          description: '{}'
+          description: ""
+          schema:
+            $ref: '#/definitions/commons.AuthorizeSecurityGroupResponse'
         "403":
           description: ""
   /alicloud/vpc:
@@ -91,7 +158,9 @@ paths:
           $ref: '#/definitions/commons.CreateVpcRequest'
       responses:
         "200":
-          description: '{}'
+          description: ""
+          schema:
+            $ref: '#/definitions/commons.CreateVpcResponse'
         "403":
           description: ""
   /alicloud/vswitch:
@@ -109,7 +178,9 @@ paths:
           $ref: '#/definitions/commons.CreateVSwitchRequest'
       responses:
         "200":
-          description: '{}'
+          description: ""
+          schema:
+            $ref: '#/definitions/commons.CreateVSwitchResponse'
         "403":
           description: ""
   /alicloud/zones:
@@ -126,7 +197,11 @@ paths:
         type: string
       responses:
         "200":
-          description: '{}'
+          description: ""
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/commons.DescribeZonesResponse'
         "403":
           description: ""
   /user/:
@@ -253,11 +328,19 @@ definitions:
     title: AuthorizeSecurityGroupRequest
     type: object
     properties:
+      IpProtocol:
+        type: string
       PortRange:
         type: string
       RegionId:
         type: string
       SecurityGroupId:
+        type: string
+  commons.AuthorizeSecurityGroupResponse:
+    title: AuthorizeSecurityGroupResponse
+    type: object
+    properties:
+      RequestId:
         type: string
   commons.CreateSecurityGroupRequest:
     title: CreateSecurityGroupRequest
@@ -268,6 +351,12 @@ definitions:
       SecurityGroupName:
         type: string
       VpcId:
+        type: string
+  commons.CreateSecurityGroupResponse:
+    title: CreateSecurityGroupResponse
+    type: object
+    properties:
+      SecurityGroupId:
         type: string
   commons.CreateVSwitchRequest:
     title: CreateVSwitchRequest
@@ -283,6 +372,12 @@ definitions:
         type: string
       ZoneId:
         type: string
+  commons.CreateVSwitchResponse:
+    title: CreateVSwitchResponse
+    type: object
+    properties:
+      VSwitchId:
+        type: string
   commons.CreateVpcRequest:
     title: CreateVpcRequest
     type: object
@@ -293,11 +388,68 @@ definitions:
         type: string
       VpcName:
         type: string
+  commons.CreateVpcResponse:
+    title: CreateVpcResponse
+    type: object
+    properties:
+      VpcId:
+        type: string
+  commons.DeleteInstanceResponse:
+    title: DeleteInstanceResponse
+    type: object
+    properties:
+      RequestId:
+        type: string
+  commons.DescribeInstancesResponse:
+    title: DescribeInstancesResponse
+    type: object
+    properties:
+      Instances:
+        type: array
+        items:
+          $ref: '#/definitions/commons.Instance'
+  commons.DescribeZonesResponse:
+    title: DescribeZonesResponse
+    type: object
+    properties:
+      LocalName:
+        type: string
+      ZoneId:
+        type: string
+  commons.Instance:
+    title: Instance
+    type: object
+    properties:
+      CreationTime:
+        type: string
+      HostName:
+        type: string
+      InnerIpAddress:
+        type: array
+        items:
+          type: string
+      InstanceId:
+        type: string
+      InstanceName:
+        type: string
+      PublicIpAddress:
+        type: array
+        items:
+          type: string
+      SecurityGroupIds:
+        type: array
+        items:
+          type: string
+      Status:
+        type: string
   commons.RunInstancesRequest:
     title: RunInstancesRequest
     type: object
     properties:
       Amount:
+        type: integer
+        format: int64
+      HostName:
         type: string
       ImageId:
         type: string
@@ -307,6 +459,10 @@ definitions:
         type: string
       Password:
         type: string
+      Period:
+        type: string
+      PeriodUnit:
+        type: string
       RegionId:
         type: string
       SecurityGroupId:
@@ -314,6 +470,20 @@ definitions:
       VSwitchId:
         type: string
       ZoneId:
+        type: string
+  commons.RunInstancesResponse:
+    title: RunInstancesResponse
+    type: object
+    properties:
+      Instances:
+        type: array
+        items:
+          $ref: '#/definitions/commons.Instance'
+  commons.StopInstanceResponse:
+    title: StopInstanceResponse
+    type: object
+    properties:
+      RequestId:
         type: string
   models.User:
     title: User

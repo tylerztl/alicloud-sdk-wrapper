@@ -6,8 +6,12 @@ const (
 )
 
 const (
-	DefaultTimeout       = 120
-	DefaultIntervalShort = 5
+	DefaultTimeout        = 120
+	DefaultIntervalShort  = 5
+	DefaultTimeoutMedium  = 500
+	DefaultIntervalMedium = 10
+	DefaultLongTimeout    = 1000
+	DefaultIntervalLong   = 20
 )
 
 type Status string
@@ -67,22 +71,27 @@ const (
 	AliCloudVSwitchDescription string = "This vswitch is created by zig-cloud"
 
 	// security group
-	AliCloudSecurityGroupName            string = "bass-sg"
-	AliCloudSecurityGroupDescription     string = "It is applied to BaaS instances"
-	AliCloudSecurityGroupRuleName        string = "baas-sg-rule"
-	AliCloudSecurityGroupRuleDescription string = "baas and blockchain network"
+	AliCloudSecurityGroupName        string = "sg-zig-cloud"
+	AliCloudSecurityGroupDescription string = "This securityGroup is created by zig-cloud"
+
+	// security group rule
+	AliCloudSecurityGroupRuleIpProtocol   string = "tcp"
+	AliCloudSecurityGroupRuleNicType      string = "intranet"
+	AliCloudSecurityGroupRuleSourceCidrIp string = "0.0.0.0/0"
+	AliCloudSecurityGroupRulePolicy       string = "accept"
+	AliCloudSecurityGroupRulePriority     string = "1"
+	AliCloudSecurityGroupRuleDescription  string = "This sg-rule is created by zig-cloud"
 
 	// instance
 	AliCloudInstanceType                 string = "ecs.c5.large"
 	AliCloudImageId                      string = "ubuntu_16_0402_64_20G_alibase_20180409.vhd"
 	AliCloudSystemDiskCategory           string = "cloud_efficiency"
 	AliCloudSystemDiskSize               string = "40"
-	AliCloudSecurityGroupId              string = "system"
-	AliCloudInstanceName                 string = "bass-instance"
-	AliCloudInstanceDescription          string = "This instance is created by BaaS"
+	AliCloudInstanceName                 string = "i-zig-cloud"
+	AliCloudInstanceDescription          string = "This instance is created by zig-cloud"
 	AliCloudInternetChargeType           string = "PayByBandwidth"
 	AliCloudInternetMaxBandwidthOut      int    = 1
-	AliCloudInstanceHostName             string = "baas"
+	AliCloudInstanceHostName             string = "zig-cloud"
 	AliCloudInstancePassword             string = "Pass@w0rd"
 	AliCloudInstanceChargeTypePrePaid    string = "PrePaid"
 	AliCloudInstanceChargeTypePostPaid   string = "PostPaid"
