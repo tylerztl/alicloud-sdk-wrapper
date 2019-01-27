@@ -154,6 +154,8 @@ func BuildInstanceRequest(request *commons.RunInstancesRequest) *ecs.RunInstance
 
 	runInstancesRequest.InternetMaxBandwidthOut = requests.NewInteger(commons.AliCloudInternetMaxBandwidthOut)
 	runInstancesRequest.InstanceName = commons.AliCloudInstanceName
+	runInstancesRequest.UniqueSuffix = requests.NewBoolean(commons.AliCloudUniqueSuffix)
+	runInstancesRequest.Tag = &[]ecs.RunInstancesTag{{Key: request.TagKey, Value: request.TagValue}}
 	runInstancesRequest.Description = commons.AliCloudInstanceDescription
 
 	if request.Amount <= 0 {

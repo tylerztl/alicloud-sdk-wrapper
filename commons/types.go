@@ -87,16 +87,18 @@ type RunInstancesRequest struct {
 	Amount             int
 	HostName           string
 	Password           string
+	TagKey             string
+	TagValue           string
 }
 
 type Instance struct {
+	InstanceId       string
 	InstanceName     string
 	HostName         string
 	Status           string
-	InstanceId       string
+	InstanceType     string
 	CreationTime     string
 	SecurityGroupIds []string
-	InnerIpAddress   []string
 	PublicIpAddress  []string
 }
 

@@ -224,13 +224,13 @@ func (c *CloudProvider) DescribeInstances(request *commons.DescribeInstancesRequ
 	response := &commons.DescribeInstancesResponse{Instances: []commons.Instance{}}
 	for _, v := range describeInstancesResponse.Instances.Instance {
 		response.Instances = append(response.Instances, commons.Instance{
+			InstanceId:       v.InstanceId,
 			InstanceName:     v.InstanceName,
 			HostName:         v.HostName,
 			Status:           v.Status,
-			InstanceId:       v.InstanceId,
+			InstanceType:     v.InstanceType,
 			CreationTime:     v.CreationTime,
 			SecurityGroupIds: v.SecurityGroupIds.SecurityGroupId,
-			InnerIpAddress:   v.InnerIpAddress.IpAddress,
 			PublicIpAddress:  v.PublicIpAddress.IpAddress,
 		})
 	}
@@ -250,6 +250,9 @@ func (c *CloudProvider) WaitForEcsInstance(regionId string, instanceIdSet []stri
 		})
 		if err != nil {
 			return nil, err
+		}
+		if len(instances.Instances) == 0 {
+			return nil, fmt.Errorf("The specified instance %v does not exist", instanceIdSet)
 		}
 		statusValid := true
 		for _, instance := range instances.Instances {

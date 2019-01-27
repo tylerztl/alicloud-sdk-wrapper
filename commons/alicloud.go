@@ -100,6 +100,7 @@ const (
 	AliCloudInstanceAmount               int    = 1
 	AliCloudIoOptimized                  string = "optimized"
 	AliCloudDryRun                       bool   = false
+	AliCloudUniqueSuffix                 bool   = true
 
 	// error messages
 	AliCloudErrorMessageVPC         string = "no vpc"
