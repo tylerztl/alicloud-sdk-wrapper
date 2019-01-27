@@ -424,13 +424,11 @@ definitions:
         type: string
       HostName:
         type: string
-      InnerIpAddress:
-        type: array
-        items:
-          type: string
       InstanceId:
         type: string
       InstanceName:
+        type: string
+      InstanceType:
         type: string
       PublicIpAddress:
         type: array
@@ -466,6 +464,10 @@ definitions:
       RegionId:
         type: string
       SecurityGroupId:
+        type: string
+      TagKey:
+        type: string
+      TagValue:
         type: string
       VSwitchId:
         type: string
