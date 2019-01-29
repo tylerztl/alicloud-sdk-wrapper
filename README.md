@@ -2,6 +2,20 @@
 
 Provide server and runtime resources for zhigui upper applications on the basis of various cloud and platform.
 
+## Prerequisites
+
+* Go 1.10+ installation or later
+* **GOPATH** environment variable is set correctly
+* govendor version v1.0.9 or later
+
+## Getting Started
+```
+cd zig-cloud
+govendor sync
+bee run -downdoc=true -gendoc true
+```
+* [http://localhost:8080/swagger/](http://localhost:8080/swagger/)
+
 ## AliCloud
 
 The providers to be used:
