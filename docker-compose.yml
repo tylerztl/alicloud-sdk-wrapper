@@ -12,3 +12,6 @@ services:
       - logs:/go/src/zig-cloud/logs
     ports:
       - "8080:8080"
+
+volumes:
+  logs: {}
