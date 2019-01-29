@@ -6,6 +6,7 @@ import (
 	"zig-cloud/commons"
 	"zig-cloud/helpers"
 
+	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/astaxie/beego"
@@ -211,6 +212,7 @@ func (c *CloudProvider) DescribeInstances(request *commons.DescribeInstancesRequ
 	describeInstancesRequest := ecs.CreateDescribeInstancesRequest()
 	describeInstancesRequest.RegionId = request.RegionId
 	describeInstancesRequest.InstanceIds = request.InstanceIds
+	describeInstancesRequest.PageSize = requests.NewInteger(commons.AliCloudPageSize)
 
 	raw, err := c.Client.WithEcsClient(func(ecsClient *ecs.Client) (interface{}, error) {
 		return ecsClient.DescribeInstances(describeInstancesRequest)
