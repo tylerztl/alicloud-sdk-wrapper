@@ -3,28 +3,246 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "+QwdUIbrAW8r/UqRALGvPThcLpk=",
+			"checksumSHA1": "cU08R1JVkOliS+xYouMznLg4D50=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "jvMR+hNg+zqflQgd+vXlhqJpzug=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "mir9zgkLR7muF4aPQtTV9T91B7E=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "CNbnmoo+iU4aHbh7trHbX8Lhm6M=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/signers",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "doehOFZCrcxJ/+Uj//8Omxtr3+Y=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk/endpoints",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "tQxFSlBM7sP6cvc1u86tS/P3NS4=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk/errors",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "tgjvt/k8CBrAw+zkOYkBBc8ts3M=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "7/yMiRZHHGz+JSe/N434TrhDr8k=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "xGAOzAfJLbB2aBYKQdfE1jtqY2E=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/sdk/utils",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "dZueZqZzc1qZWmt8aZ+TfZ+EtKQ=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/services/ecs",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "dlHozsMOEmhJKX8mk52//jCEgqM=",
+			"path": "github.com/aliyun/alibaba-cloud-sdk-go/services/vpc",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "KDUtjxO63r7L1aU9dT5KhQW4AdM=",
+			"path": "github.com/astaxie/beego",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "JvDySyr+rfWQ9sp+ciwxxWywea0=",
+			"path": "github.com/astaxie/beego/config",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "oa4Dm7Dsh7TtNRdmhoTxr08Xakg=",
+			"path": "github.com/astaxie/beego/context",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "iHY0XMPlj5EfCxMN4NEmvBgdhDM=",
+			"path": "github.com/astaxie/beego/context/param",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "N5kHk4qbc10N2Lp9ltA2G76qNxs=",
+			"path": "github.com/astaxie/beego/grace",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "OksAzF6VvpfTlte99lpVNV+iSnY=",
+			"path": "github.com/astaxie/beego/logs",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "eUDVYnw8v2YUh3ktL+bIQOIyluc=",
+			"path": "github.com/astaxie/beego/orm",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "dXvvTC4ePe3mebX2nOoJcLKJwnc=",
+			"path": "github.com/astaxie/beego/plugins/cors",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "CeN6YeH3kCkiGK0n+Gpij5zJKfs=",
+			"path": "github.com/astaxie/beego/session",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "UGYM5ci8rhhkur7NqejqItZRHBY=",
+			"path": "github.com/astaxie/beego/toolbox",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "W7HBzu7HlF18vCfNPgax7xvHXB0=",
+			"path": "github.com/astaxie/beego/utils",
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
+		},
+		{
+			"checksumSHA1": "yIkYzW7bzAD81zHyuCNmEj4+oxQ=",
+			"path": "github.com/gopherjs/gopherjs/js",
+			"revision": "d547d1d9531ed93dbdebcbff7f83e7c876a1e0ee",
+			"revisionTime": "2018-11-03T18:53:06Z"
+		},
+		{
+			"checksumSHA1": "9dPHJ2IqSJok9bKZ6btWALYE/pA=",
+			"origin": "github.com/aliyun/alibaba-cloud-sdk-go/vendor/github.com/jmespath/go-jmespath",
+			"path": "github.com/jmespath/go-jmespath",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "cWK7LRKEmORE8mZbNpvOtdLuaho=",
+			"origin": "github.com/aliyun/alibaba-cloud-sdk-go/vendor/github.com/json-iterator/go",
+			"path": "github.com/json-iterator/go",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "cIiyvAduLLFvu+tg1Qr5Jw3jeWo=",
+			"path": "github.com/jtolds/gls",
+			"revision": "b4936e06046bbecbb94cae9c18127ebe510a2cb9",
+			"revisionTime": "2018-11-10T20:28:10Z"
+		},
+		{
+			"checksumSHA1": "48fqnqznT/7gqJJ5MXLqNWLLlao=",
 			"path": "github.com/mattn/go-sqlite3",
-			"revision": "87ac1cb49789a0ef6b0d7be6b7aa458a9b90d7ae",
-			"revisionTime": "2018-12-18T03:04:05Z"
+			"revision": "3fa1c550ffa69b74dc4bfd5109b4e218f32c87cf",
+			"revisionTime": "2019-01-04T16:17:12Z"
 		},
 		{
-			"checksumSHA1": "ETfjuu5F8ejF27iatik4uPga2VQ=",
+			"checksumSHA1": "ZTcgWKWHsrX0RXYVXn5Xeb8Q0go=",
+			"origin": "github.com/aliyun/alibaba-cloud-sdk-go/vendor/github.com/modern-go/concurrent",
+			"path": "github.com/modern-go/concurrent",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "01BvsgCRlr4HR2hVHUFqTyhsInM=",
+			"origin": "github.com/aliyun/alibaba-cloud-sdk-go/vendor/github.com/modern-go/reflect2",
+			"path": "github.com/modern-go/reflect2",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "+nVM+CEZGAopOrYlLifgWP+X01E=",
+			"origin": "github.com/aliyun/alibaba-cloud-sdk-go/vendor/github.com/satori/go.uuid",
+			"path": "github.com/satori/go.uuid",
+			"revision": "2ce95bbb8f649f8e477ee6f84c00ff7a4a3aa0fc",
+			"revisionTime": "2018-12-21T07:12:46Z"
+		},
+		{
+			"checksumSHA1": "IFtQxH02Qj36QooV+Z41enAh/hc=",
+			"path": "github.com/smartystreets/assertions",
+			"revision": "b2de0cb4f26d0705483a2f495d89896d0b808573",
+			"revisionTime": "2018-09-27T18:05:07Z"
+		},
+		{
+			"checksumSHA1": "v6W3GIQMzr3QSXB2NtBa9X7SwiI=",
+			"path": "github.com/smartystreets/assertions/internal/go-render/render",
+			"revision": "b2de0cb4f26d0705483a2f495d89896d0b808573",
+			"revisionTime": "2018-09-27T18:05:07Z"
+		},
+		{
+			"checksumSHA1": "r6FauVdOTFnwYQgrKGFuWUbIAJE=",
+			"path": "github.com/smartystreets/assertions/internal/oglematchers",
+			"revision": "b2de0cb4f26d0705483a2f495d89896d0b808573",
+			"revisionTime": "2018-09-27T18:05:07Z"
+		},
+		{
+			"checksumSHA1": "c71WVAQlpp3r4I+BtTxRz1Cq1Lw=",
+			"path": "github.com/smartystreets/goconvey/convey",
+			"revision": "044398e4856c3a83fb98f9de0a8ed1c6495e2843",
+			"revisionTime": "2018-11-08T00:35:08Z"
+		},
+		{
+			"checksumSHA1": "6Mgn4H/4vpqYGlaIKZ0UwOmJN0E=",
+			"path": "github.com/smartystreets/goconvey/convey/gotest",
+			"revision": "044398e4856c3a83fb98f9de0a8ed1c6495e2843",
+			"revisionTime": "2018-11-08T00:35:08Z"
+		},
+		{
+			"checksumSHA1": "uTSA/KWQA01sKPYfmLyMPvXbYaA=",
+			"path": "github.com/smartystreets/goconvey/convey/reporting",
+			"revision": "044398e4856c3a83fb98f9de0a8ed1c6495e2843",
+			"revisionTime": "2018-11-08T00:35:08Z"
+		},
+		{
+			"checksumSHA1": "J6lNRPdrYhKft6S8x33K9brxyhE=",
+			"origin": "github.com/astaxie/beego/vendor/golang.org/x/crypto/acme",
 			"path": "golang.org/x/crypto/acme",
-			"revision": "505ab145d0a99da450461ae2c1a9f6cd10d1f447",
-			"revisionTime": "2018-09-26T22:07:39Z"
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
 		},
 		{
-			"checksumSHA1": "Yjacru/DE9yXphaefh67NrjNgAk=",
+			"checksumSHA1": "EFjIi/zCZ1Cte0MQtyxGCTgSzk8=",
+			"origin": "github.com/astaxie/beego/vendor/golang.org/x/crypto/acme/autocert",
 			"path": "golang.org/x/crypto/acme/autocert",
-			"revision": "505ab145d0a99da450461ae2c1a9f6cd10d1f447",
-			"revisionTime": "2018-09-26T22:07:39Z"
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
 		},
 		{
-			"checksumSHA1": "QqDq2x8XOU7IoOR98Cx1eiV5QY8=",
+			"checksumSHA1": "ZSWoOPUNRr5+3dhkLK3C4cZAQPk=",
+			"origin": "github.com/astaxie/beego/vendor/gopkg.in/yaml.v2",
 			"path": "gopkg.in/yaml.v2",
-			"revision": "51d6538a90f86fe93ac480b35f37b2be17fef232",
-			"revisionTime": "2018-11-15T11:05:04Z"
+			"revision": "28f0008075c555fd1c683d73945a887455d74e27",
+			"revisionTime": "2018-12-19T14:26:23Z"
 		}
 	],
 	"rootPath": "zig-cloud"
