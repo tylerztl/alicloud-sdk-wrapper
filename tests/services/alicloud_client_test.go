@@ -1,17 +1,18 @@
 package services
 
 import (
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"fmt"
 	"testing"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/utils"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 )
 
 func GetClient() *ecs.Client {
 	/*
-	var regionId string = "cn-huhehaote"
-	var accessKeyId string = "LTAIP5a8969b3WUho"
-	var accessKeySecret string = "R94ZD14r8kfZlEZuk69mclpppxKSoCc"
+		var regionId string = "cn-huhehaote"
+		var accessKeyId string = "LTAIP5a8969b3WUho"
+		var accessKeySecret string = "R94ZD14r8kfZlEZuk69mclpppxKSoCc"
 	*/
 
 	///*

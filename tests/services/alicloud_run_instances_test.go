@@ -1,13 +1,14 @@
 package services
 
 import (
-	"testing"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"fmt"
-	"zig-cloud/commons"
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
-	"zig-cloud/helpers"
+	"testing"
 	"time"
+	"zig-cloud/commons"
+	"zig-cloud/helpers"
+
+	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 )
 
 func TestAliCloudDescribeZones(t *testing.T) {
@@ -87,7 +88,7 @@ func TestAliCloudRunInstances(t *testing.T) {
 		//fmt.Println(describeZonesResponse.GetHttpContentString())
 		zoneId := describeZonesResponse.Zones.Zone[0].ZoneId
 		fmt.Println(">>>> zone id " + zoneId)
-	}else {
+	} else {
 		fmt.Println(err)
 	}
 
@@ -100,7 +101,7 @@ func TestAliCloudRunInstances(t *testing.T) {
 
 	if err == nil {
 		fmt.Println(switchResponse.GetHttpContentString())
-	}else{
+	} else {
 		fmt.Println(err)
 	}
 
@@ -119,7 +120,7 @@ func TestAliCloudRunInstances(t *testing.T) {
 	fmt.Println("The security group ID is " + response.SecurityGroupId)
 	fmt.Println(response.GetHttpContentString())
 
-	authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest();
+	authorizeSecurityGroupRequest := ecs.CreateAuthorizeSecurityGroupRequest()
 	authorizeSecurityGroupRequest.SecurityGroupId = response.SecurityGroupId
 	authorizeSecurityGroupRequest.NicType = "intranet"
 	authorizeSecurityGroupRequest.IpProtocol = "tcp"
@@ -157,7 +158,7 @@ func TestAliCloudRunInstances(t *testing.T) {
 
 	if err == nil {
 		fmt.Println(instanceResponse.GetHttpContentString())
-	}else {
+	} else {
 		t.Error(err)
 	}
 }
