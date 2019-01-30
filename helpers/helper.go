@@ -4,8 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 	"zig-cloud/commons"
+
+	"github.com/astaxie/beego"
 )
 
 // define the helper functions
@@ -47,4 +50,19 @@ func ConvertListToJsonString(configured []string) string {
 	}
 	result += "]"
 	return result
+}
+
+func GetInstanceImageId() string {
+	var imageId string
+	useEnv, err := beego.AppConfig.Bool(string(commons.UseEnv))
+	if err == nil && useEnv {
+		if imageId = os.Getenv(string(commons.EnvSnapshotImageId)); imageId == "" {
+			imageId = commons.AliCloudImageId
+		}
+	} else {
+		if imageId = beego.AppConfig.String(string(commons.SnapshotImageId)); imageId == "" {
+			imageId = commons.AliCloudImageId
+		}
+	}
+	return imageId
 }

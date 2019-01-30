@@ -41,15 +41,15 @@ func (c *Config) Client() *AliCloudClient {
 
 func init() {
 	var RegionId, AccessKeyId, AccessKeySecret string
-	useEnv, err := beego.AppConfig.Bool(commons.UseEnv)
+	useEnv, err := beego.AppConfig.Bool(string(commons.UseEnv))
 	if err == nil && useEnv {
-		RegionId = os.Getenv(commons.RegionId)
-		AccessKeyId = os.Getenv(commons.AccessKeyId)
-		AccessKeySecret = os.Getenv(commons.AccessKeySecret)
+		RegionId = os.Getenv(string(commons.EnvRegionId))
+		AccessKeyId = os.Getenv(string(commons.EnvAccessKeyId))
+		AccessKeySecret = os.Getenv(string(commons.EnvAccessKeySecret))
 	} else {
-		RegionId = beego.AppConfig.String(commons.RegionId)
-		AccessKeyId = beego.AppConfig.String(commons.AccessKeyId)
-		AccessKeySecret = beego.AppConfig.String(commons.AccessKeySecret)
+		RegionId = beego.AppConfig.String(string(commons.RegionId))
+		AccessKeyId = beego.AppConfig.String(string(commons.AccessKeyId))
+		AccessKeySecret = beego.AppConfig.String(string(commons.AccessKeySecret))
 	}
 
 	config := Config{

@@ -115,7 +115,7 @@ func BuildInstanceRequest(request *commons.RunInstancesRequest) *ecs.RunInstance
 	runInstancesRequest.RegionId = request.RegionId
 	runInstancesRequest.ZoneId = request.ZoneId
 	if request.ImageId == commons.ValueEmpty {
-		runInstancesRequest.ImageId = commons.AliCloudImageId
+		runInstancesRequest.ImageId = helpers.GetInstanceImageId()
 	} else {
 		runInstancesRequest.ImageId = request.ImageId
 	}

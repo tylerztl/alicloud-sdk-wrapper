@@ -6,7 +6,8 @@ Provide server and runtime resources for zhigui upper applications on the basis 
 
 * Go 1.10+ installation or later
 * **GOPATH** environment variable is set correctly
-* govendor version v1.0.9 or later
+* Beego version 1.10.0 or later
+* Govendor version 1.0.9 or later
 
 ## Getting Started
 ```

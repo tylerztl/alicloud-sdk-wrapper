@@ -5,9 +5,10 @@ services:
     container_name: zigcloud
     restart: always
     environment:
-      - regionid=cn-huhehaote
-      - accesskeyid=LTAIP5a8969b3WUho
-      - accesskeysecret=R94ZD14r8kfZlEZuk69mclpppxKSoCc
+      - ALICLOUD_REGION_ID=cn-huhehaote
+      - ALICLOUD_ACCESS_KEY_ID=LTAIP5a8969b3WUho
+      - ALICLOUD_ACCESS_KEY_SECRET=R94ZD14r8kfZlEZuk69mclpppxKSoCc
+      - ALICLOUD_SNAPSHOT_IMAGE_ID=m-hp394odccetza0zc88cc
     volumes:
       - logs:/go/src/zig-cloud/logs
     ports:
