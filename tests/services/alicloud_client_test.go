@@ -9,17 +9,10 @@ import (
 )
 
 func GetClient() *ecs.Client {
-	/*
-		var regionId string = "cn-huhehaote"
-		var accessKeyId string = "LTAIP5a8969b3WUho"
-		var accessKeySecret string = "R94ZD14r8kfZlEZuk69mclpppxKSoCc"
-	*/
 
-	///*
 	var regionId string = "cn-huhehaote"
-	var accessKeyId string = "76PKIccqlFZERf7X"
-	var accessKeySecret string = "6QHPmxyEf80WqUNinteE1WWWqoz8IW"
-	//*/
+	var accessKeyId string = "LTAIP5a8969b3WUho"
+	var accessKeySecret string = "R94ZD14r8kfZlEZuk69mclpppxKSoCc"
 
 	client, err := ecs.NewClientWithAccessKey(regionId, accessKeyId, accessKeySecret)
 
