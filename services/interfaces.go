@@ -24,12 +24,8 @@ type Provider interface {
 func GetProviderByType(providerType commons.CloudProvider) Provider {
 	switch providerType {
 	case commons.AliCloud:
-		return NewAliCloudProvider()
+		return alicloud.NewAliCloudProvider()
 	default:
-		return NewAliCloudProvider()
+		return alicloud.NewAliCloudProvider()
 	}
-}
-
-func NewAliCloudProvider() Provider {
-	return &alicloud.CloudProvider{Client: alicloud.GetClient()}
 }

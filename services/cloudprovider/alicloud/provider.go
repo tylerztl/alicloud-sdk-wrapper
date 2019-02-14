@@ -5,6 +5,7 @@ import (
 	"time"
 	"zig-cloud/commons"
 	"zig-cloud/helpers"
+	"zig-cloud/models"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -13,7 +14,21 @@ import (
 )
 
 type CloudProvider struct {
-	Client *AliCloudClient
+	Client        *AliCloudClient
+	VpcModel      *models.VpcModel
+	VSwitchModel  *models.VSwitchModel
+	SGModel       *models.SecurityGroupModel
+	InstanceModel *models.InstanceModel
+}
+
+func NewAliCloudProvider() *CloudProvider {
+	return &CloudProvider{
+		Client:        GetClient(),
+		VpcModel:      models.NewVpcModel(),
+		VSwitchModel:  models.NewVSwitchModel(),
+		SGModel:       models.NewSecurityGroupModel(),
+		InstanceModel: models.NewInstanceModel(),
+	}
 }
 
 func (c *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*commons.CreateVpcResponse, error) {
@@ -34,6 +49,17 @@ func (c *CloudProvider) CreateVpc(request *commons.CreateVpcRequest) (*commons.C
 		beego.Error("Timeout when WaitForVpc Available,", err)
 		return nil, err
 	}
+
+	_, err = c.VpcModel.AddVpc(&models.Vpc{
+		VpcName:         vpcRequest.VpcName,
+		RegionId:        vpcRequest.RegionId,
+		CidrBlock:       vpcRequest.CidrBlock,
+		VpcId:           vpcResponse.VpcId,
+		VRouterId:       vpcResponse.VRouterId,
+		RouteTableId:    vpcResponse.RouteTableId,
+		ResourceGroupId: vpcResponse.ResourceGroupId,
+	})
+
 	return &commons.CreateVpcResponse{VpcId: vpcResponse.VpcId}, nil
 }
 
@@ -102,6 +128,16 @@ func (c *CloudProvider) CreateVSwitch(request *commons.CreateVSwitchRequest) (*c
 		beego.Error("Timeout when WaitForVSwitch Available,", err)
 		return nil, err
 	}
+
+	_, err = c.VSwitchModel.AddVSwitch(&models.VSwitch{
+		VSwitchName: vswitchRequest.VSwitchName,
+		VSwitchId:   vswitchResponse.VSwitchId,
+		VpcId:       vswitchRequest.VpcId,
+		RegionId:    vswitchRequest.RegionId,
+		ZoneId:      vswitchRequest.ZoneId,
+		CidrBlock:   vswitchRequest.CidrBlock,
+	})
+
 	return &commons.CreateVSwitchResponse{VSwitchId: vswitchResponse.VSwitchId}, nil
 }
 
@@ -168,6 +204,14 @@ func (c *CloudProvider) CreateSecurityGroup(request *commons.CreateSecurityGroup
 		return nil, fmt.Errorf("Creating security group got a nil response")
 	}
 	beego.Debug("CreateSecurityGroup successful SecurityGroupId =", securityGroupResponse.SecurityGroupId)
+
+	_, err = c.SGModel.AddSecurityGroup(&models.SecurityGroup{
+		SecurityGroupName: securityGroupRequest.SecurityGroupName,
+		SecurityGroupId:   securityGroupResponse.SecurityGroupId,
+		VpcId:             securityGroupRequest.VpcId,
+		RegionId:          securityGroupRequest.RegionId,
+	})
+
 	return &commons.CreateSecurityGroupResponse{SecurityGroupId: securityGroupResponse.SecurityGroupId}, nil
 }
 
@@ -203,6 +247,18 @@ func (c *CloudProvider) RunInstances(request *commons.RunInstancesRequest) (*com
 	if err != nil {
 		beego.Error("Timeout when WaitForEcsInstance Running,", err)
 		return nil, err
+	}
+
+	for _, v := range instances.Instances {
+		_, err = c.InstanceModel.AddInstance(&models.Instance{
+			InstanceId:       v.InstanceId,
+			InstanceName:     v.InstanceName,
+			InstanceType:     v.InstanceType,
+			PublicIpAddress:  v.PublicIpAddress,
+			VSwitchId:        runInstancesRequest.VSwitchId,
+			SecurityGroupIds: v.SecurityGroupIds,
+			CreationTime:     v.CreationTime,
+		})
 	}
 
 	return &commons.RunInstancesResponse{Instances: instances.Instances}, nil

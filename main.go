@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"zig-cloud/database"
+	_ "zig-cloud/database"
 	_ "zig-cloud/routers"
 	_ "zig-cloud/services/cloudprovider/alicloud"
 
@@ -14,7 +14,6 @@ import (
 
 func init() {
 	initLogger()
-	database.RegisterSQLite()
 }
 
 func initLogger() {

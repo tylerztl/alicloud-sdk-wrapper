@@ -7,6 +7,10 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+func init() {
+	RegisterSQLite()
+}
+
 func RegisterSQLite() {
 	maxIdle := 30
 	maxConn := 30
@@ -23,4 +27,8 @@ func RegisterSQLite() {
 
 func RegisterModels() {
 	orm.RegisterModel(new(models.User))
+	orm.RegisterModel(new(models.Vpc))
+	orm.RegisterModel(new(models.VSwitch))
+	orm.RegisterModel(new(models.SecurityGroup))
+	orm.RegisterModel(new(models.Instance))
 }
