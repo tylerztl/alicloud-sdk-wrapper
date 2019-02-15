@@ -11,10 +11,8 @@ services:
       - ALICLOUD_SNAPSHOT_IMAGE_ID=m-hp394odccetza0zc88cc
     volumes:
       - logs:/go/src/zig-cloud/logs
-      - database/zigcloud.db:/go/src/zig-cloud/zigcloud.db
     ports:
       - "8080:8080"
 
 volumes:
   logs: {}
-  database: {}
