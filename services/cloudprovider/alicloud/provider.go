@@ -321,7 +321,11 @@ func (c *CloudProvider) WaitForEcsInstance(regionId string, instanceIdSet []stri
 		}
 		if statusValid {
 			//Sleep one more time for timing issues, eg. sg-rules
-			time.Sleep(commons.DefaultIntervalLong * time.Second)
+			if len(instanceIdSet) > 11 {
+				time.Sleep(commons.DefaultIntervalLong * time.Second)
+			} else {
+				time.Sleep(commons.DefaultIntervalMedium * time.Second)
+			}
 			return instances, nil
 		}
 		timeout = timeout - commons.DefaultIntervalShort

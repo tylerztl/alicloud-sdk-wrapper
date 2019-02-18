@@ -9,9 +9,9 @@ const (
 	DefaultTimeout        = 120
 	DefaultIntervalShort  = 5
 	DefaultTimeoutMedium  = 500
-	DefaultIntervalMedium = 10
+	DefaultIntervalMedium = 20
 	DefaultLongTimeout    = 1000
-	DefaultIntervalLong   = 20
+	DefaultIntervalLong   = 30
 )
 
 type Status string
