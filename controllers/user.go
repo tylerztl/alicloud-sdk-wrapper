@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"zig-cloud/models"
+	"alicloud-sdk-wrapper/models"
 
 	"github.com/astaxie/beego"
 )

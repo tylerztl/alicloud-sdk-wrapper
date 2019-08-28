@@ -1,8 +1,8 @@
 package services
 
 import (
-	"zig-cloud/commons"
-	"zig-cloud/services/cloudprovider/alicloud"
+	"alicloud-sdk-wrapper/commons"
+	"alicloud-sdk-wrapper/services/cloudprovider/alicloud"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 )

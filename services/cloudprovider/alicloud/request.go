@@ -1,8 +1,8 @@
 package alicloud
 
 import (
-	"zig-cloud/commons"
-	"zig-cloud/helpers"
+	"alicloud-sdk-wrapper/commons"
+	"alicloud-sdk-wrapper/helpers"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/utils"

@@ -17,4 +17,4 @@
 
 vendor/*
 *.tmp
-zig-cloud
+alicloud-sdk-wrapper

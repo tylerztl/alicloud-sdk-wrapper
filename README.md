@@ -1,6 +1,4 @@
-# zig-cloud
-
-Provide server and runtime resources for zhigui upper applications on the basis of various cloud and platform.
+# alicloud-sdk-wrapper
 
 ## Prerequisites
 
@@ -11,7 +9,7 @@ Provide server and runtime resources for zhigui upper applications on the basis 
 
 ## Getting Started
 ```
-cd zig-cloud
+cd alicloud-sdk-wrapper
 govendor sync
 bee run -downdoc=true -gendoc true
 ```

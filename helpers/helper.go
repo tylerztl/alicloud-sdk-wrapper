@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"time"
-	"zig-cloud/commons"
+	"alicloud-sdk-wrapper/commons"
 
 	"github.com/astaxie/beego"
 )

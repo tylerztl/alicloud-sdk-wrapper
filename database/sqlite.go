@@ -1,7 +1,7 @@
 package database
 
 import (
-	"zig-cloud/models"
+	"alicloud-sdk-wrapper/models"
 
 	"github.com/astaxie/beego/orm"
 	_ "github.com/mattn/go-sqlite3"
@@ -14,7 +14,7 @@ func init() {
 func RegisterSQLite() {
 	maxIdle := 30
 	maxConn := 30
-	err := orm.RegisterDataBase("default", "sqlite3", "zigcloud.db", maxIdle, maxConn)
+	err := orm.RegisterDataBase("default", "sqlite3", "alicloud.db", maxIdle, maxConn)
 	if nil != err {
 		panic(err)
 	}

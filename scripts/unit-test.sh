@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-go test zig-cloud/tests/services -run TestAliCloudRunInstances
+go test alicloud-sdk-wrapper/tests/services -run TestAliCloudRunInstances

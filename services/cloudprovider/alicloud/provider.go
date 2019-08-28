@@ -3,9 +3,9 @@ package alicloud
 import (
 	"fmt"
 	"time"
-	"zig-cloud/commons"
-	"zig-cloud/helpers"
-	"zig-cloud/models"
+	"alicloud-sdk-wrapper/commons"
+	"alicloud-sdk-wrapper/helpers"
+	"alicloud-sdk-wrapper/models"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"

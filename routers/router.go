@@ -1,16 +1,14 @@
 // @APIVersion 1.0.0
-// @Title Zig Cloud API
+// @Title Ali Cloud API
 // @Description Manage IaaS Resources
-// @Contact fanjiahe@zhigui.com
-// @TermsOfServiceUrl http://zhigui.com
 // @License Apache 2.0
 // @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
 package routers
 
 import (
 	"github.com/astaxie/beego"
-	"zig-cloud/commons"
-	"zig-cloud/controllers"
+	"alicloud-sdk-wrapper/commons"
+	"alicloud-sdk-wrapper/controllers"
 )
 
 func init() {

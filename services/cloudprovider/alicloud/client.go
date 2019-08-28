@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
-	"zig-cloud/commons"
+	"alicloud-sdk-wrapper/commons"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"

@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	_ "zig-cloud/database"
-	_ "zig-cloud/routers"
-	_ "zig-cloud/services/cloudprovider/alicloud"
+	_ "alicloud-sdk-wrapper/database"
+	_ "alicloud-sdk-wrapper/routers"
+	_ "alicloud-sdk-wrapper/services/cloudprovider/alicloud"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"

@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
-	"zig-cloud/commons"
-	"zig-cloud/services"
+	"alicloud-sdk-wrapper/commons"
+	"alicloud-sdk-wrapper/services"
 
 	"github.com/astaxie/beego"
 )
